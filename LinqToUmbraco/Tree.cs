@@ -14,7 +14,7 @@ namespace umbraco.Linq.Core
     /// </remarks>
     /// <typeparam name="TDocType">The type of the DocType.</typeparam>
     [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Naming", "CA1710:IdentifiersShouldHaveCorrectSuffix")]
-    public abstract class Tree<TDocType> : IContentTree, IEnumerable<TDocType>
+    public abstract class Tree<TDocType> : IContentTree, IEnumerable<TDocType>, IEnumerable
         where TDocType : DocTypeBase, new()
     {
         #region IContentTree Members
@@ -59,7 +59,7 @@ namespace umbraco.Linq.Core
 
         IEnumerator IEnumerable.GetEnumerator()
         {
-            return GetEnumerator();
+            return this.GetEnumerator();
         }
 
         #endregion

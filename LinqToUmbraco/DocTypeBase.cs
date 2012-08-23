@@ -21,6 +21,7 @@ namespace umbraco.Linq.Core
         private int _templateId;
         private int _parentId;
         private User _writer;
+        private int _creatorId;
         private User _creator;
         private string _path;
         private IEnumerable<DocTypeBase> _ancestors;
@@ -143,15 +144,15 @@ namespace umbraco.Linq.Core
         {
             get
             {
-                return _versionId;
+                return this._versionId;
             }
             protected internal set
             {
-                if (_versionId != value)
+                if (this._versionId != value)
                 {
-                    RaisePropertyChanging();
-                    _versionId = value;
-                    RaisePropertyChanged("Version");
+                    this.RaisePropertyChanging();
+                    this._versionId = value;
+                    this.RaisePropertyChanged("Version");
                 }
             }
         }
@@ -243,7 +244,15 @@ namespace umbraco.Linq.Core
         /// <value>The children of this DocType instance.</value>
         public AssociationTree<DocTypeBase> Children
         {
-            get { return _children ?? (_children = Provider.LoadAssociation(Id)); }
+            get
+            {
+                if (this._children == null)
+                {
+                    this._children = this.Provider.LoadAssociation(this.Id); //tell the provider to create it
+                }
+
+                return this._children;
+            }
         }
 
         /// <summary>
@@ -254,7 +263,7 @@ namespace umbraco.Linq.Core
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1004:GenericMethodsShouldProvideTypeParameter")]
         protected AssociationTree<TDocTypeBase> ChildrenOfType<TDocTypeBase>() where TDocTypeBase : DocTypeBase, new()
         {
-            return Provider.LoadAssociation(Children.Where(d => d is TDocTypeBase).Cast<TDocTypeBase>());
+            return this.Provider.LoadAssociation<TDocTypeBase>(this.Children.Where(d => d is TDocTypeBase).Cast<TDocTypeBase>());
         }
 
         /// <summary>
@@ -266,7 +275,12 @@ namespace umbraco.Linq.Core
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1004:GenericMethodsShouldProvideTypeParameter")]
         public virtual TParent Parent<TParent>() where TParent : DocTypeBase, new()
         {
-            return _parentId == -1 ? null : Provider.Load<TParent>(_parentId);
+            if (this._parentId == -1)
+            {
+                return null;
+            }
+
+            return this.Provider.Load<TParent>(this._parentId);
         }
 
         /// <summary>
@@ -279,7 +293,7 @@ namespace umbraco.Linq.Core
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1004:GenericMethodsShouldProvideTypeParameter")]
         public TDocType AncestorOrDefault<TDocType>() where TDocType : DocTypeBase
         {
-            return AncestorOrDefault<TDocType>(t => true); //just a simple little true statement ;)
+            return this.AncestorOrDefault<TDocType>(t => true); //just a simple little true statement ;)
         }
 
         /// <summary>
@@ -292,12 +306,16 @@ namespace umbraco.Linq.Core
         public TDocType AncestorOrDefault<TDocType>(Func<TDocType, bool> func) where TDocType : DocTypeBase
         {
             if (func == null)
+            {
                 throw new ArgumentNullException("func");
+            }
 
-            if (_ancestors == null)
-                _ancestors = Provider.LoadAncestors(Id);
+            if (this._ancestors == null)
+            {
+                this._ancestors = this.Provider.LoadAncestors(this.Id);
+            }
 
-            return _ancestors.Where(a => a is TDocType).Cast<TDocType>().FirstOrDefault(func);
+            return this._ancestors.Where(a => a is TDocType).Cast<TDocType>().FirstOrDefault(func);
         }
         #endregion
 
@@ -305,8 +323,17 @@ namespace umbraco.Linq.Core
         /// Gets or sets the creator ID.
         /// </summary>
         /// <value>The creator ID.</value>
-        public int CreatorID { get; internal set; }
-
+        public int CreatorID
+        {
+            get
+            {
+                return _creatorId;
+            }
+            internal set
+            {
+                _creatorId = value;
+            }
+        }
         /// <summary>
         /// Gets the umbraco user who created the item
         /// </summary>
@@ -353,9 +380,9 @@ namespace umbraco.Linq.Core
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1030:UseEventsWhereAppropriate")]
         protected virtual void RaisePropertyChanged(string name)
         {
-            if (PropertyChanged != null)
+            if (this.PropertyChanged != null)
             {
-                PropertyChanged(this, new PropertyChangedEventArgs(name));
+                this.PropertyChanged(this, new PropertyChangedEventArgs(name));
             }
         }
 

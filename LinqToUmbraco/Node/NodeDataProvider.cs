@@ -37,17 +37,18 @@ namespace umbraco.Linq.Core.Node
         {
             get
             {
-                var doc = UmbracoContext.Current.Server.ContentXml;
-                if (doc == null)
-                {
-                    Debug.WriteLine("ALERT! Manually loading xml for linqtoumbraco");
-                    return XDocument.Load(XmlPath);
-                }
-                else
-                {
-                    Debug.WriteLine("Xml fetched for LinqToUmbraco");
-                    return doc;
-                }
+                    var doc = UmbracoContext.Current.Server.ContentXml;
+                    if (doc == null)
+                    {
+                        Debug.WriteLine("ALERT! Manually loading xml for linqtoumbraco");
+                        return XDocument.Load(XmlPath);
+                    }
+                    else
+                    {
+                        Debug.WriteLine("Xml fetched for LinqToUmbraco");
+                        return doc;
+                    }                    
+                    
 
             }
         }
@@ -82,10 +83,7 @@ namespace umbraco.Linq.Core.Node
         /// Gets the name of the provider
         /// </summary>
         /// <value>The name of the provider.</value>
-        public override string Name
-        {
-            get { return "NodeDataProvider"; }
-        }  
+        public override static const string Name = "NodeDataProvider";        
 
         /// <summary>
         /// Loads the tree with the relivent DocTypes from the XML

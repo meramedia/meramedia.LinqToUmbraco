@@ -1,6 +1,0 @@
-If you knew how to use the old LinqToUmbraco you should know how to use this.
-
-If you don't know what this is all about, you should probably ignore this package.
-
-You can however contact me for whatever reason at: henri@meramedia.se
-
