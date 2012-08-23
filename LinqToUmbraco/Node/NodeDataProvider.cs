@@ -83,7 +83,7 @@ namespace umbraco.Linq.Core.Node
         /// Gets the name of the provider
         /// </summary>
         /// <value>The name of the provider.</value>
-        public override static const string Name = "NodeDataProvider";        
+        public override string Name { get { return "NodeDataProvider"; } }
 
         /// <summary>
         /// Loads the tree with the relivent DocTypes from the XML
@@ -275,6 +275,7 @@ namespace umbraco.Linq.Core.Node
             node.WriterName = (string)xml.Attribute("writerName");
             node.Level = (int)xml.Attribute("level");
             node.TemplateId = (int)xml.Attribute("template");
+            node.Path = (string)xml.Attribute("path");
 
             var properties = node.GetType().GetProperties(BindingFlags.Public | BindingFlags.Instance).Where(p => p.GetCustomAttributes(typeof(PropertyAttribute), true).Any());
             foreach (var p in properties)

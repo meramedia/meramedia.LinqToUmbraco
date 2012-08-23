@@ -23,6 +23,14 @@ namespace umbraco.Linq.Core
         }
 
         /// <summary>
+        /// Useless ctors needed because of generated DataContext file created by umbraco.
+        /// </summary>
+        public UmbracoDataContext()
+        { }
+        public UmbracoDataContext(UmbracoDataProvider _)
+        { throw new NotImplementedException("Please dont use this ctor.");  }
+
+        /// <summary>
         /// Loads the tree of umbraco items.
         /// </summary>
         /// <typeparam name="TDocTypeBase">The type of the DocTypeBase.</typeparam>

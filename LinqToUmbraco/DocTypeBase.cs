@@ -259,8 +259,7 @@ namespace umbraco.Linq.Core
         /// Gets the children which are of the type TDocTypeBase.
         /// </summary>
         /// <typeparam name="TDocTypeBase">The DocType of the children desired.</typeparam>
-        /// <returns>An <see cref="umbraco.Linq.Core.AssociationTree&lt;TDocTypeBase&gt;"/> of the children</returns>
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1004:GenericMethodsShouldProvideTypeParameter")]
+        /// <returns>An <see cref="umbraco.Linq.Core.AssociationTree&lt;TDocTypeBase&gt;"/> of the children</returns>        
         protected AssociationTree<TDocTypeBase> ChildrenOfType<TDocTypeBase>() where TDocTypeBase : DocTypeBase, new()
         {
             return this.Provider.LoadAssociation<TDocTypeBase>(this.Children.Where(d => d is TDocTypeBase).Cast<TDocTypeBase>());
@@ -272,7 +271,6 @@ namespace umbraco.Linq.Core
         /// <typeparam name="TParent">The type of the parent.</typeparam>
         /// <returns>Null when at the root level, else the parent instance</returns>
         /// <exception cref="DocTypeMismatchException">If the type of the parent does not match the provided type</exception>
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1004:GenericMethodsShouldProvideTypeParameter")]
         public virtual TParent Parent<TParent>() where TParent : DocTypeBase, new()
         {
             if (this._parentId == -1)
@@ -289,8 +287,7 @@ namespace umbraco.Linq.Core
         /// <remarks>
         /// Provides similar functionality to the XPath method
         /// </remarks>
-        /// <returns>First ancestor matching type. Null if no match found</returns>
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1004:GenericMethodsShouldProvideTypeParameter")]
+        /// <returns>First ancestor matching type. Null if no match found</returns>        
         public TDocType AncestorOrDefault<TDocType>() where TDocType : DocTypeBase
         {
             return this.AncestorOrDefault<TDocType>(t => true); //just a simple little true statement ;)
@@ -363,8 +360,7 @@ namespace umbraco.Linq.Core
 
         /// <summary>
         /// Raises the property changing event.
-        /// </summary>
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1030:UseEventsWhereAppropriate")]
+        /// </summary>        
         protected virtual void RaisePropertyChanging()
         {
             if (PropertyChanging != null)
@@ -376,8 +372,7 @@ namespace umbraco.Linq.Core
         /// <summary>
         /// Raises the property changed event.
         /// </summary>
-        /// <param name="name">The name of the changed property.</param>
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1030:UseEventsWhereAppropriate")]
+        /// <param name="name">The name of the changed property.</param>        
         protected virtual void RaisePropertyChanged(string name)
         {
             if (this.PropertyChanged != null)
