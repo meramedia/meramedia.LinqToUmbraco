@@ -71,6 +71,9 @@
     <Reference Include="cms">
       <HintPath>..\bin\cms.dll</HintPath>
     </Reference>
+    <Reference Include="controls">
+      <HintPath>..\bin\controls.dll</HintPath>
+    </Reference>
     <Reference Include="interfaces">
       <HintPath>..\bin\interfaces.dll</HintPath>
     </Reference>
@@ -107,6 +110,13 @@
   <ItemGroup>
     <Compile Include="AssociationTree.cs" />
     <Compile Include="Attributes.cs" />
+    <Compile Include="Dashboard\ExportCode.ascx.cs">
+      <DependentUpon>ExportCode.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Dashboard\ExportCode.ascx.designer.cs">
+      <DependentUpon>ExportCode.ascx.cs</DependentUpon>
+    </Compile>
     <Compile Include="IContentTree.cs" />
     <Compile Include="IDocTypeBase.cs" />
     <Compile Include="IUmbracoDataContext.cs" />
@@ -138,6 +148,11 @@
       <ProductName>Windows Installer 3.1</ProductName>
       <Install>true</Install>
     </BootstrapperPackage>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Dashboard\ExportCode.ascx">
+      <SubType>ASPXCodeBehind</SubType>
+    </Content>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
