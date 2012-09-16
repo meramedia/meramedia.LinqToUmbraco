@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace umbraco.Linq.Core
+namespace meramedia.Linq.Core
 {
     /// <summary>
     /// Exception for when the provided class does not meet the expected class

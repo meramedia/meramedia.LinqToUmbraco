@@ -34,6 +34,4 @@
             <strong>Don't forget to change the extensions to .cs!</strong>
         </p>
         <asp:HyperLink ID="lnkPoco" runat="server" Text="POCO" Target="_blank" />
-        <br />
-        <asp:HyperLink ID="lnkAbstractions" runat="server" Text="Abstractions" Target="_blank" Enabled="false" />
     </cc1:Pane>

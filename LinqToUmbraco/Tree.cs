@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Collections;
 
-namespace umbraco.Linq.Core
+namespace meramedia.Linq.Core
 {
     /// <summary>
     /// Represents a collection within DataProvider of a DocType

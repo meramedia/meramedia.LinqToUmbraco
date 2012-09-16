@@ -2,13 +2,14 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using umbraco.BusinessLogic;
 using umbraco.cms.businesslogic;
 using umbraco.cms.businesslogic.datatype;
 using umbraco.cms.businesslogic.propertytype;
 using umbraco.cms.businesslogic.web;
 using umbraco.cms.helpers;
 
-namespace umbraco.Linq.Core.Dashboard
+namespace meramedia.Linq.Core.Dashboard
 {
     internal class CodeGenerator
     {
@@ -37,8 +38,10 @@ namespace umbraco.Linq.Core.Dashboard
                 sb.Append(string.Format(TemplateConstants.CLASS_TEMPLATE,
                     dt.Alias,
                     className,
+                    String.Empty, // fixme
                     GenerateProperties(dt),
                     GenerateChildRelationships(dt),
+                    String.Empty, // fixme
                     FormatForComment(dt.Description),
                     baseType
                     )
@@ -112,7 +115,7 @@ namespace umbraco.Linq.Core.Dashboard
                 }
                 else //hmm so it didn't, lets try something else
                 {
-                    var dbType = BusinessLogic.Application.SqlHelper.ExecuteScalar<string>(@"SELECT [t0].[dbType] FROM [cmsDataType] AS [t0] WHERE [t0].[controlId] = @p0", BusinessLogic.Application.SqlHelper.CreateParameter("@p0", id));
+                    var dbType = Application.SqlHelper.ExecuteScalar<string>(@"SELECT [t0].[dbType] FROM [cmsDataType] AS [t0] WHERE [t0].[controlId] = @p0", Application.SqlHelper.CreateParameter("@p0", id));
 
                     if (!string.IsNullOrEmpty(dbType)) //can I determine from the DB?
                     {

@@ -8,5 +8,5 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyDescription("")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyProduct("Core")]
-[assembly: System.Runtime.CompilerServices.InternalsVisibleTo("umbraco.Linq.Core.Tests")]
+[assembly: System.Runtime.CompilerServices.InternalsVisibleTo("meramedia.Linq.Core.Tests")]
 [assembly: ComVisible(false)]

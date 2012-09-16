@@ -1,6 +1,6 @@
 ﻿using System;
 using System.ComponentModel;
-namespace umbraco.Linq.Core
+namespace meramedia.Linq.Core
 {
     /// <summary>
     /// 

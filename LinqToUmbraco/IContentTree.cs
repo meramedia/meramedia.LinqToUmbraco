@@ -1,5 +1,5 @@
 ﻿
-namespace umbraco.Linq.Core
+namespace meramedia.Linq.Core
 {
     /// <summary>
     /// Base of an umbraco content tree

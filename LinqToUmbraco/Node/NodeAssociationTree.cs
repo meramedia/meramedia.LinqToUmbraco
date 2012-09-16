@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 
-namespace umbraco.Linq.Core.Node
+namespace meramedia.Linq.Core.Node
 {
     /// <summary>
     /// Represents a collection of TDocTypeBase retrieved from the umbraco XML cache which are direct children of a node

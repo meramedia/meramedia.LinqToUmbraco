@@ -3,12 +3,12 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Xml.Linq;
-using umbraco.Linq.Core.Node;
+using meramedia.Linq.Core.Node;
 
-namespace umbraco.Linq.Core
+namespace meramedia.Linq.Core
 {
     /// <summary>
-    /// The umbracoDataContext which handles the interaction with an <see cref="umbraco.Linq.Core.UmbracoDataProvider"/>
+    /// The umbracoDataContext which handles the interaction with an <see cref="UmbracoDataProvider"/>
     /// </summary>
     public abstract class UmbracoDataContext : IDisposable
     {

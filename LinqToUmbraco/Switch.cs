@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace umbraco.Linq.Core
+namespace meramedia.Linq.Core
 {
     /// <summary>
     /// Typed switch implementation from Bart De Smet: http://community.bartdesmet.net/blogs/bart/archive/2008/03/30/a-functional-c-type-switch.aspx

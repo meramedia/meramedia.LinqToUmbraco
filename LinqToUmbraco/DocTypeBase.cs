@@ -6,7 +6,7 @@ using umbraco.BusinessLogic;
 using System.Collections.Generic;
 using System.Text.RegularExpressions;
 
-namespace umbraco.Linq.Core
+namespace meramedia.Linq.Core
 {
     /// <summary>
     /// Provides the base framework for an umbraco item
@@ -259,7 +259,7 @@ namespace umbraco.Linq.Core
         /// Gets the children which are of the type TDocTypeBase.
         /// </summary>
         /// <typeparam name="TDocTypeBase">The DocType of the children desired.</typeparam>
-        /// <returns>An <see cref="umbraco.Linq.Core.AssociationTree&lt;TDocTypeBase&gt;"/> of the children</returns>        
+        /// <returns>An <see cref="AssociationTree{TDocTypeBase}"/> of the children</returns>        
         protected AssociationTree<TDocTypeBase> ChildrenOfType<TDocTypeBase>() where TDocTypeBase : DocTypeBase, new()
         {
             return this.Provider.LoadAssociation<TDocTypeBase>(this.Children.Where(d => d is TDocTypeBase).Cast<TDocTypeBase>());

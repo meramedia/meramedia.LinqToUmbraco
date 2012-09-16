@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Web.UI;
 using umbraco.IO;
-using umbraco.Linq.Core.Dashboard;
+using meramedia.Linq.Core.Dashboard;
 using umbraco.cms.businesslogic;
 using umbraco.cms.businesslogic.datatype;
 using umbraco.cms.businesslogic.propertytype;
@@ -44,7 +44,7 @@ namespace meramedia.Linq.Core.Dashboard
 
             lnkPoco.NavigateUrl = pocoFile;
 
-            pnlButtons.Visible = false;
+            //pnlButtons.Visible = false;
             pane_files.Visible = true;
         }
 

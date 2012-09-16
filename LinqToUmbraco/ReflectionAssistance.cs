@@ -2,9 +2,10 @@
 using System.Linq;
 using System.Reflection;
 using System.Xml.Linq;
+using meramedia.Linq.Core;
 using umbraco.cms.helpers;
 
-namespace umbraco.Linq.Core
+namespace meramedia.Linq.Core
 {
     /// <summary>
     /// Class containing helpers when doing reflection against nodes
@@ -31,9 +32,9 @@ namespace umbraco.Linq.Core
         internal static Func<Type, XElement, bool> CompareByAlias = (t, x) => x.Name.LocalName == Casing.SafeAlias(GetUmbracoInfoAttribute(t).Alias);
 
         /// <summary>
-        /// Get the <see cref="umbraco.Linq.Core.umbracoInfoAttribute"/> for a <see cref="System.Reflection.MethodInfo"/> object
+        /// Get the <see cref="meramedia.Linq.Core.umbracoInfoAttribute"/> for a <see cref="System.Reflection.MethodInfo"/> object
         /// </summary>
-        /// <param name="member">The methodInfo to get the <see cref="umbraco.Linq.Core.umbracoInfoAttribute"/> for.</param>
+        /// <param name="member">The methodInfo to get the <see cref="meramedia.Linq.Core.umbracoInfoAttribute"/> for.</param>
         /// <returns></returns>
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Naming", "CA1704:IdentifiersShouldBeSpelledCorrectly", MessageId = "umbraco")]
         public static UmbracoInfoAttribute GetUmbracoInfoAttribute(MemberInfo member)
@@ -42,9 +43,9 @@ namespace umbraco.Linq.Core
         }
 
         /// <summary>
-        /// Get the <see cref="umbraco.Linq.Core.umbracoInfoAttribute"/> for a type
+        /// Get the <see cref="meramedia.Linq.Core.umbracoInfoAttribute"/> for a type
         /// </summary>
-        /// <param name="type">The type to get the <see cref="umbraco.Linq.Core.umbracoInfoAttribute"/> for.</param>
+        /// <param name="type">The type to get the <see cref="meramedia.Linq.Core.umbracoInfoAttribute"/> for.</param>
         /// <returns></returns>
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011:ConsiderPassingBaseTypesAsParameters")]
         public static UmbracoInfoAttribute GetUmbracoInfoAttribute(Type type)

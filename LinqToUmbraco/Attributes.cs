@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace umbraco.Linq.Core
+namespace meramedia.Linq.Core
 {
     /// <summary>
     /// Standard umbraco info

@@ -3,17 +3,18 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace umbraco.Linq.Core.Dashboard
+namespace meramedia.Linq.Core.Dashboard
 {
     internal class TemplateConstants
     {
 
         internal const string EXPORT_FOLDER = "/exported-doctypes/";
 
-        internal const string POCO_TEMPLATE = @"using System;
+        internal const string POCO_TEMPLATE = 
+@"          using System;
             using System.Linq;
-            using umbraco.Linq.Core;
             using System.Collections.Generic;
+            using meramedia.Linq.Core;
 
             namespace {0} {{
 	            public partial class {1}DataContext : UmbracoDataContext {{
@@ -37,7 +38,7 @@ namespace umbraco.Linq.Core.Dashboard
 		{{
 			get
 			{{
-				return this.LoadTree<{0}>();
+				return LoadTree<{0}>();
 			}}
 		}}";
 
@@ -76,16 +77,16 @@ namespace umbraco.Linq.Core.Dashboard
 		{{
 			get
 			{{
-				return this._{1};
+				return _{1};
 			}}
 			set
 			{{
-				if ((this._{1} != value))
+				if ((_{1} != value))
 				{{
-					this.RaisePropertyChanging();
-					this._{1} = value;
-                    this.IsDirty = true;
-					this.RaisePropertyChanged(""{1}"");
+					RaisePropertyChanging();
+					_{1} = value;
+                    IsDirty = true;
+					RaisePropertyChanged(""{1}"");
 				}}
 			}}
 		}}";
@@ -96,25 +97,17 @@ namespace umbraco.Linq.Core.Dashboard
 		{{
 			get
 			{{
-				if ((this._{0}s == null))
+				if ((_{0}s == null))
 				{{
-					this._{0}s = this.ChildrenOfType<{0}>();
+					_{0}s = ChildrenOfType<{0}>();
 				}}
-				return this._{0}s;
+				return _{0}s;
 			}}
 			set
 			{{
-				this._{0}s = value;
+				_{0}s = value;
 			}}
 		}}";
 
-        internal readonly static string CHILD_RELATIONS_ABSTRACTION_TEMPLATE = @"
-		IEnumerable<I{0}> I{1}.{0}s 
-		{{
-			get
-			{{
-				return this.{0}s.OfType<I{0}>();
-			}}
-		}}";
     }
 }

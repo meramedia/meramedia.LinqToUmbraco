@@ -9,7 +9,7 @@ using umbraco.presentation;
 using umbraco.cms.helpers;
 using umbraco.BusinessLogic.Utils;
 
-namespace umbraco.Linq.Core.Node
+namespace meramedia.Linq.Core.Node
 {
     /// <summary>
     /// Data Provider for LINQ to umbraco via umbraco nodes
@@ -17,7 +17,7 @@ namespace umbraco.Linq.Core.Node
     /// <remarks>
     /// <para>This class provides a data access model for the umbraco XML cache.
     /// It is responsible for the access to the XML and construction of nodes from it.</para>
-    /// <para>The <see cref="umbraco.Linq.Core.Node.NodeDataProvider"/> is capable of reading the XML cache from either the path provided in the umbraco settings or from a specified location on the file system.</para>
+    /// <para>The <see cref="meramedia.Linq.Core.Node.NodeDataProvider"/> is capable of reading the XML cache from either the path provided in the umbraco settings or from a specified location on the file system.</para>
     /// </remarks>
     public sealed class NodeDataProvider : UmbracoDataProvider
     {
@@ -89,7 +89,7 @@ namespace umbraco.Linq.Core.Node
         /// Loads the tree with the relivent DocTypes from the XML
         /// </summary>
         /// <typeparam name="TDocType">The type of the DocType to load.</typeparam>
-        /// <returns><see cref="umbraco.Linq.Core.Node.NodeTree&lt;TDocType&gt;"/> representation of the content tree</returns>
+        /// <returns><see cref="meramedia.Linq.Core.Node.NodeTree&lt;TDocType&gt;"/> representation of the content tree</returns>
         /// <exception cref="System.ObjectDisposedException">When the data provider has been disposed of</exception>
         public override Tree<TDocType> LoadTree<TDocType>()
         {

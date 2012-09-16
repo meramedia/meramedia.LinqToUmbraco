@@ -4,7 +4,7 @@ using System.Diagnostics;
 using umbraco.cms.businesslogic;
 using umbraco.cms.businesslogic.web;
 
-namespace umbraco.Linq.Core
+namespace meramedia.Linq.Core
 {
     /// <summary>
     /// Provides the methods required for a data access model within the LINQ to Umbraco project
