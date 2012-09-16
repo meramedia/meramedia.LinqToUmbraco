@@ -12,7 +12,7 @@ namespace umbraco.Linq.Core.Dashboard
 {
     internal class CodeGenerator
     {
-        private readonly Dictionary<Guid, Type> dataTypeMapping = new Dictionary<Guid, Type>();
+        private readonly Dictionary<Guid, Type> _dataTypeMapping = new Dictionary<Guid, Type>();
         private List<DocumentType> _docTypes;
         public List<DocumentType> DocTypes
         {
@@ -88,7 +88,7 @@ namespace umbraco.Linq.Core.Dashboard
         internal string GetDotNetType(PropertyType pt)
         {
             Guid id = pt.DataTypeDefinition.DataType.Id;
-            if (!dataTypeMapping.ContainsKey(id))
+            if (!_dataTypeMapping.ContainsKey(id))
             {
                 var defaultData = pt.DataTypeDefinition.DataType.Data as DefaultData;
                 if (defaultData != null) //first lets see if it inherits from DefaultData, pretty much all do
@@ -96,57 +96,57 @@ namespace umbraco.Linq.Core.Dashboard
                     switch (defaultData.DatabaseType)
                     {
                         case DBTypes.Integer:
-                            dataTypeMapping.Add(id, typeof(int));
+                            _dataTypeMapping.Add(id, typeof(int));
                             break;
                         case DBTypes.Date:
-                            dataTypeMapping.Add(id, typeof(DateTime));
+                            _dataTypeMapping.Add(id, typeof(DateTime));
                             break;
                         case DBTypes.Nvarchar:
                         case DBTypes.Ntext:
-                            dataTypeMapping.Add(id, typeof(string));
+                            _dataTypeMapping.Add(id, typeof(string));
                             break;
                         default:
-                            dataTypeMapping.Add(id, typeof(object));
+                            _dataTypeMapping.Add(id, typeof(object));
                             break;
                     }
                 }
                 else //hmm so it didn't, lets try something else
                 {
-                    var dbType = umbraco.BusinessLogic.Application.SqlHelper.ExecuteScalar<string>(@"SELECT [t0].[dbType] FROM [cmsDataType] AS [t0] WHERE [t0].[controlId] = @p0", umbraco.BusinessLogic.Application.SqlHelper.CreateParameter("@p0", id));
+                    var dbType = BusinessLogic.Application.SqlHelper.ExecuteScalar<string>(@"SELECT [t0].[dbType] FROM [cmsDataType] AS [t0] WHERE [t0].[controlId] = @p0", BusinessLogic.Application.SqlHelper.CreateParameter("@p0", id));
 
                     if (!string.IsNullOrEmpty(dbType)) //can I determine from the DB?
                     {
                         switch (dbType.ToUpper())
                         {
                             case "INTEGER":
-                                dataTypeMapping.Add(id, typeof(int));
+                                _dataTypeMapping.Add(id, typeof(int));
                                 break;
                             case "DATE":
-                                dataTypeMapping.Add(id, typeof(DateTime));
+                                _dataTypeMapping.Add(id, typeof(DateTime));
                                 break;
                             case "NTEXT":
                             case "NVARCHAR":
-                                dataTypeMapping.Add(id, typeof(string));
+                                _dataTypeMapping.Add(id, typeof(string));
                                 break;
                             default:
-                                dataTypeMapping.Add(id, typeof(object));
+                                _dataTypeMapping.Add(id, typeof(object));
                                 break;
                         }
                     }
                     else
                     {
                         //ok, you've got a really freaky data type, so you get an Object back :P
-                        dataTypeMapping.Add(id, typeof(object));
+                        _dataTypeMapping.Add(id, typeof(object));
                     }
                 }
             }
             //if it's a valueType and it's not a mandatory field we'll make it nullable. And let's be lazy and us something like 'int?' rather than
             //the fully layed out version :P
-            if (!pt.Mandatory && dataTypeMapping[id].IsValueType)
-                return dataTypeMapping[id].Name + "?";
+            if (!pt.Mandatory && _dataTypeMapping[id].IsValueType)
+                return _dataTypeMapping[id].Name + "?";
 
             //here we can use a standard type name
-            return dataTypeMapping[id].Name;
+            return _dataTypeMapping[id].Name;
         }
 
         internal string GenerateDataContextCollections()

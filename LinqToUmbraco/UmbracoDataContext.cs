@@ -10,7 +10,7 @@ namespace umbraco.Linq.Core
     /// <summary>
     /// The umbracoDataContext which handles the interaction with an <see cref="umbraco.Linq.Core.UmbracoDataProvider"/>
     /// </summary>
-    public abstract class UmbracoDataContext : IUmbracoDataContext
+    public abstract class UmbracoDataContext : IDisposable
     {
         /// <summary>
         /// Gets the data provider.
@@ -28,8 +28,6 @@ namespace umbraco.Linq.Core
         protected UmbracoDataContext()
         { }
 
-        protected UmbracoDataContext(UmbracoDataProvider _)
-        { throw new NotImplementedException("Please dont use this ctor.");  }
 
         /// <summary>
         /// Loads the tree of umbraco items.
@@ -42,16 +40,7 @@ namespace umbraco.Linq.Core
             CheckDisposed();
             return DataProvider.LoadTree<TDocTypeBase>();
         }
-
-        /// <summary>
-        /// Submits the changes within the UmbracoDataContext through the <see cref="umbraco.Linq.Core.UmbracoDataProvider"/>
-        /// </summary>
-        public void SubmitChanges()
-        {
-            CheckDisposed();
-            DataProvider.SubmitChanges();
-        }
-        
+       
 
         #region IDisposable Members
 

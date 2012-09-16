@@ -135,14 +135,5 @@ namespace umbraco.Linq.Core
 
         #endregion
 
-        /// <summary>
-        /// Submits the changes tracked by the UmbracoDataProvider
-        /// </summary>
-        /// <remarks>It is up to the implementor of the UmbracoDataProvider to decide whether or not they are supporting change submission in their provider. This will thrown an exception unless it is explicitly implemented.</remarks>
-        /// <exception cref="System.NotImplementedException">Thrown unless the method is implemented in a custom UmbracoDataProvider.</exception>
-        protected internal virtual void SubmitChanges()
-        {
-            throw new NotImplementedException("Provider \"" + Name + "\" does not implement a submittable pattern");
-        }
     }
 }

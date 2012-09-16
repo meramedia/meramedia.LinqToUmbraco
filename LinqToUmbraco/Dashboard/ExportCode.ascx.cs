@@ -26,7 +26,7 @@ namespace meramedia.Linq.Core.Dashboard
         {
             var codeGen = new CodeGenerator();
 
-            var GeneratedClasses = string.Format(TemplateConstants.POCO_TEMPLATE,
+            var generatedClasses = string.Format(TemplateConstants.POCO_TEMPLATE,
                 txtNamespace.Text,
                 txtDataContextName.Text,
                 codeGen.GenerateDataContextCollections(),
@@ -39,7 +39,7 @@ namespace meramedia.Linq.Core.Dashboard
 
             using (var writer = new StreamWriter(IOHelper.MapPath(pocoFile)))
             {
-                writer.Write(GeneratedClasses);
+                writer.Write(generatedClasses);
             }
 
             lnkPoco.NavigateUrl = pocoFile;
