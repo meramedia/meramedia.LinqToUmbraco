@@ -110,6 +110,7 @@
   <ItemGroup>
     <Compile Include="AssociationTree.cs" />
     <Compile Include="Attributes.cs" />
+    <Compile Include="Dashboard\CodeGenerator.cs" />
     <Compile Include="Dashboard\ExportCode.ascx.cs">
       <DependentUpon>ExportCode.ascx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -117,6 +118,7 @@
     <Compile Include="Dashboard\ExportCode.ascx.designer.cs">
       <DependentUpon>ExportCode.ascx.cs</DependentUpon>
     </Compile>
+    <Compile Include="Dashboard\TemplateConstants.cs" />
     <Compile Include="IContentTree.cs" />
     <Compile Include="IDocTypeBase.cs" />
     <Compile Include="IUmbracoDataContext.cs" />

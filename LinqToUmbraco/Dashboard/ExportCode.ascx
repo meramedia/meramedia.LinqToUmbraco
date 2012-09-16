@@ -13,13 +13,6 @@
 
     <p id="pageName" style="text-align: center;">Export to .NET</p>
 
-    <cc1:Pane ID="pane_language" runat="server">
-        <em class="label">Generation Mode:</em>
-        <asp:DropDownList ID="ddlGenerationMode" runat="server">
-            <asp:ListItem Text="Plain Old CLR Objects (POCO) with abstractions" Value="abs" />
-            <asp:ListItem Text="Plain Old CLR Objects (POCO)" Value="poco" />
-        </asp:DropDownList>
-    </cc1:Pane>
     <cc1:Pane ID="pane_contextName" runat="server">
         <div>
             <em class="label">DataContext Name:</em>

@@ -25,9 +25,10 @@ namespace umbraco.Linq.Core
         /// <summary>
         /// Useless ctors needed because of generated DataContext file created by umbraco.
         /// </summary>
-        public UmbracoDataContext()
+        protected UmbracoDataContext()
         { }
-        public UmbracoDataContext(UmbracoDataProvider _)
+
+        protected UmbracoDataContext(UmbracoDataProvider _)
         { throw new NotImplementedException("Please dont use this ctor.");  }
 
         /// <summary>
@@ -48,7 +49,6 @@ namespace umbraco.Linq.Core
         public void SubmitChanges()
         {
             CheckDisposed();
-
             DataProvider.SubmitChanges();
         }
         
