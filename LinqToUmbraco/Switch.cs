@@ -30,7 +30,7 @@ namespace meramedia.Linq.Core
         /// <returns></returns>
         public Switch Case<T>(Action<T> a)
         {
-            return Case<T>(o => true, a, false);
+            return Case(o => true, a, false);
         }
 
         /// <summary>
@@ -42,7 +42,7 @@ namespace meramedia.Linq.Core
         /// <returns></returns>
         public Switch Case<T>(Action<T> a, bool fallThrough)
         {
-            return Case<T>(o => true, a, fallThrough);
+            return Case(o => true, a, fallThrough);
         }
 
         /// <summary>
@@ -54,7 +54,7 @@ namespace meramedia.Linq.Core
         /// <returns></returns>
         public Switch Case<T>(Func<T, bool> c, Action<T> a)
         {
-            return Case<T>(c, a, false);
+            return Case(c, a, false);
         }
 
         /// <summary>

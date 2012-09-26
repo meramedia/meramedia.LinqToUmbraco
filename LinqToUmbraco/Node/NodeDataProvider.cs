@@ -22,7 +22,7 @@ namespace meramedia.Linq.Core.Node
     public sealed class NodeDataProvider : UmbracoDataProvider
     {
         private readonly object _lockObject = new object();
-        private string XmlPath
+        private static string XmlPath
         {
             get
             {
@@ -56,8 +56,6 @@ namespace meramedia.Linq.Core.Node
         /// <summary>
         /// Initializes the NodeDataProvider, performing validation
         /// </summary>
-        /// <param name="xmlPath">The XML path.</param>
-
         private void Init()
         {            
 
@@ -70,7 +68,6 @@ namespace meramedia.Linq.Core.Node
         /// <summary>
         /// Initializes a new instance of the <see cref="NodeDataProvider"/> class
         /// </summary>
-        /// <param name="xmlPath">The path of the umbraco XML</param>        
         /// <remarks>
         /// This constructor is ideal for unit testing as it allows for the XML to be located anywhere
         /// </remarks>
@@ -202,9 +199,6 @@ namespace meramedia.Linq.Core.Node
         /// <returns>Collecton of .NET types from the XML</returns>
         internal IEnumerable<DocTypeBase> DynamicNodeCreation(IEnumerable<XElement> elements)
         {
-            // TODO: investigate this method for performance bottlenecks
-            // TODO: dataContext knows the types, maybe can load from there?
-            //List<DocTypeBase> ancestors = new List<DocTypeBase>();
 
             foreach (XElement node in elements)
             {                

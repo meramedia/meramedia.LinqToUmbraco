@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Diagnostics;
 using umbraco.cms.businesslogic;
+using umbraco.cms.businesslogic.media;
 using umbraco.cms.businesslogic.web;
 
 namespace meramedia.Linq.Core
@@ -25,6 +26,11 @@ namespace meramedia.Linq.Core
             Document.AfterUnPublish += Document_AfterUnPublish;
             Document.AfterDelete += Document_AfterDelete;
             Document.AfterMoveToTrash += Document_AfterMoveToTrash;
+            
+            //TODO: more events for media caching support
+            //Media.AfterNew
+            //Media.AfterMoveToTrash
+            //Media.AfterDelete
         }
 
         private void Document_AfterNew(object sender, NewEventArgs e)

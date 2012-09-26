@@ -21,7 +21,6 @@ namespace meramedia.Linq.Core
         private int _templateId;
         private int _parentId;
         private User _writer;
-        private int _creatorId;
         private User _creator;
         private string _path;
         private IEnumerable<DocTypeBase> _ancestors;
@@ -144,15 +143,15 @@ namespace meramedia.Linq.Core
         {
             get
             {
-                return this._versionId;
+                return _versionId;
             }
             protected internal set
             {
-                if (this._versionId != value)
+                if (_versionId != value)
                 {
-                    this.RaisePropertyChanging();
-                    this._versionId = value;
-                    this.RaisePropertyChanged("Version");
+                    RaisePropertyChanging();
+                    _versionId = value;
+                    RaisePropertyChanged("Version");
                 }
             }
         }
@@ -244,15 +243,7 @@ namespace meramedia.Linq.Core
         /// <value>The children of this DocType instance.</value>
         public AssociationTree<DocTypeBase> Children
         {
-            get
-            {
-                if (this._children == null)
-                {
-                    this._children = this.Provider.LoadAssociation(this.Id); //tell the provider to create it
-                }
-
-                return this._children;
-            }
+            get { return _children ?? (_children = Provider.LoadAssociation(Id)); }
         }
 
         /// <summary>
@@ -262,7 +253,7 @@ namespace meramedia.Linq.Core
         /// <returns>An <see cref="AssociationTree{TDocTypeBase}"/> of the children</returns>        
         protected AssociationTree<TDocTypeBase> ChildrenOfType<TDocTypeBase>() where TDocTypeBase : DocTypeBase, new()
         {
-            return this.Provider.LoadAssociation<TDocTypeBase>(this.Children.Where(d => d is TDocTypeBase).Cast<TDocTypeBase>());
+            return Provider.LoadAssociation(Children.Where(d => d is TDocTypeBase).Cast<TDocTypeBase>());
         }
 
         /// <summary>
@@ -273,12 +264,7 @@ namespace meramedia.Linq.Core
         /// <exception cref="DocTypeMismatchException">If the type of the parent does not match the provided type</exception>
         public virtual TParent Parent<TParent>() where TParent : DocTypeBase, new()
         {
-            if (this._parentId == -1)
-            {
-                return null;
-            }
-
-            return this.Provider.Load<TParent>(this._parentId);
+            return _parentId == -1 ? null : Provider.Load<TParent>(_parentId);
         }
 
         /// <summary>
@@ -290,7 +276,7 @@ namespace meramedia.Linq.Core
         /// <returns>First ancestor matching type. Null if no match found</returns>        
         public TDocType AncestorOrDefault<TDocType>() where TDocType : DocTypeBase
         {
-            return this.AncestorOrDefault<TDocType>(t => true); //just a simple little true statement ;)
+            return AncestorOrDefault<TDocType>(t => true); //just a simple little true statement ;)
         }
 
         /// <summary>
@@ -307,12 +293,12 @@ namespace meramedia.Linq.Core
                 throw new ArgumentNullException("func");
             }
 
-            if (this._ancestors == null)
+            if (_ancestors == null)
             {
-                this._ancestors = this.Provider.LoadAncestors(this.Id);
+                _ancestors = Provider.LoadAncestors(Id);
             }
 
-            return this._ancestors.Where(a => a is TDocType).Cast<TDocType>().FirstOrDefault(func);
+            return _ancestors.Where(a => a is TDocType).Cast<TDocType>().FirstOrDefault(func);
         }
         #endregion
 
@@ -320,17 +306,8 @@ namespace meramedia.Linq.Core
         /// Gets or sets the creator ID.
         /// </summary>
         /// <value>The creator ID.</value>
-        public int CreatorID
-        {
-            get
-            {
-                return _creatorId;
-            }
-            internal set
-            {
-                _creatorId = value;
-            }
-        }
+        public int CreatorID { get; internal set; }
+
         /// <summary>
         /// Gets the umbraco user who created the item
         /// </summary>
@@ -375,9 +352,9 @@ namespace meramedia.Linq.Core
         /// <param name="name">The name of the changed property.</param>        
         protected virtual void RaisePropertyChanged(string name)
         {
-            if (this.PropertyChanged != null)
+            if (PropertyChanged != null)
             {
-                this.PropertyChanged(this, new PropertyChangedEventArgs(name));
+                PropertyChanged(this, new PropertyChangedEventArgs(name));
             }
         }
 

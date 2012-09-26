@@ -83,7 +83,7 @@ namespace meramedia.Linq.Core.Node
                     }
                 }
             }
-            return this._nodes.GetEnumerator();
+            return _nodes.GetEnumerator();
         }
 
         /// <summary>

@@ -5,7 +5,7 @@ namespace meramedia.Linq.Core
     /// <summary>
     /// Exception for when the provided class does not meet the expected class
     /// </summary>
-    [global::System.Serializable]
+    [Serializable]
     public class DocTypeMismatchException : ArgumentException
     {
         /// <summary>
@@ -72,7 +72,7 @@ namespace meramedia.Linq.Core
     /// <summary>
     /// Exception raised when a field isn't meeting its mandatory requirement
     /// </summary>
-    [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1032:ImplementStandardExceptionConstructors"), global::System.Serializable]
+    [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1032:ImplementStandardExceptionConstructors"), Serializable]
     public class MandatoryFailureException : Exception
     {
         /// <summary>
