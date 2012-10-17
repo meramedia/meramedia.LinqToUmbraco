@@ -26,11 +26,19 @@ namespace meramedia.Linq.Core
             Document.AfterUnPublish += Document_AfterUnPublish;
             Document.AfterDelete += Document_AfterDelete;
             Document.AfterMoveToTrash += Document_AfterMoveToTrash;
-            
+
+            // Republish entire site
+            umbraco.content.AfterRefreshContent += content_AfterRefreshContent;
+
             //TODO: more events for media caching support
             //Media.AfterNew
             //Media.AfterMoveToTrash
             //Media.AfterDelete
+        }
+
+        void content_AfterRefreshContent(Document sender, RefreshContentEventArgs e)
+        {
+            Flush();
         }
 
         private void Document_AfterNew(object sender, NewEventArgs e)
