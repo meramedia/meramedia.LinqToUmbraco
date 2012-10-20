@@ -8,7 +8,7 @@
     <ProjectGuid>{31CAEC36-0C3D-4D69-B092-84866811EA07}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>umbraco.Linq.Core</RootNamespace>
+    <RootNamespace>meramedia.Linq.Core</RootNamespace>
     <AssemblyName>meramedia.Linq.Core</AssemblyName>
     <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>

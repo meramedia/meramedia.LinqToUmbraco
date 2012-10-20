@@ -5,7 +5,6 @@ using System.Linq;
 using System.IO;
 using System.Xml.Linq;
 using System.Reflection;
-using umbraco.Linq.Core;
 using umbraco.cms.businesslogic;
 using umbraco.cms.businesslogic.web;
 using umbraco.presentation;

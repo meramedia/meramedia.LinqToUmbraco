@@ -24,6 +24,9 @@ namespace meramedia.Linq.Core
         /// <value>The provider.</value>
         public abstract UmbracoDataProvider Provider { get; protected set; }
 
+        /// <summary>
+        /// Manually reload cache
+        /// </summary>
         public abstract void ReloadCache();
 
         /// <summary>

@@ -8,7 +8,7 @@ using meramedia.Linq.Core.Node;
 using umbraco.cms.businesslogic;
 using umbraco.cms.businesslogic.web;
 
-namespace umbraco.Linq.Core
+namespace meramedia.Linq.Core
 {
     internal static class NodeCache
     {
@@ -43,8 +43,13 @@ namespace umbraco.Linq.Core
         {
             var docType = changedNode.ContentType.Alias;
             var key = new UmbracoInfoAttribute(docType);
+            ClearTree(key);
+        }
+
+        internal static void ClearTree(UmbracoInfoAttribute key)
+        {
             if (Trees.ContainsKey(key))
-                Trees.Remove(key);            
+                Trees.Remove(key);     
         }
     }
 }

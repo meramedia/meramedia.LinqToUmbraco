@@ -76,11 +76,11 @@ namespace meramedia.Linq.Core.Node
         /// Reloads the cache for the particular NodeTree
         /// </summary>
         public override void ReloadCache()
-        {
-            throw new NotImplementedException();
+        {            
             _provider.CheckDisposed();
 
             var attr = ReflectionAssistance.GetUmbracoInfoAttribute(typeof(TDocTypeBase));
+            NodeCache.ClearTree(attr);
             _provider.SetupNodeTree<TDocTypeBase>(attr);
         }
     }
