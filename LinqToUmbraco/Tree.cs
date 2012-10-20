@@ -20,7 +20,7 @@ namespace meramedia.Linq.Core
     public abstract class Tree<TDocType> : IContentTree, IEnumerable<TDocType>
         where TDocType : DocTypeBase, new()
     {
-        private List<TDocType> _nodes;
+        protected List<TDocType> _nodes;
 
         /// <summary>
         /// Gets the <see cref="umbracoDataProvider"/> Provider associated with this instance

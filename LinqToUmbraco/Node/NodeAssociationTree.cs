@@ -11,7 +11,6 @@ namespace meramedia.Linq.Core.Node
     public sealed class NodeAssociationTree<TDocTypeBase> : AssociationTree<TDocTypeBase> where TDocTypeBase : DocTypeBase, new()
     {
         private readonly object _lockObject = new object();
-        private List<TDocTypeBase> _nodes;
 
         internal NodeAssociationTree(IEnumerable<TDocTypeBase> nodes)
         {

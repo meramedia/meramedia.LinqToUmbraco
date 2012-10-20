@@ -379,13 +379,14 @@ namespace meramedia.Linq.Core.Node
                 SetupNodeTree<T>(attr);
 
             var node = NodeCache.GetNode<T>(id);
-            if (node == null)
+            if (node != null)
+                return node;
+            else            
             {
                 Debug.WriteLine("Node not found in cache, trying xml..");
                 var xmlNode = Xml.Descendants().SingleOrDefault(d => d.Attribute("isDoc") != null && (int)d.Attribute("id") == id);
                 return SetValuesFromXml<T>(xmlNode);
-            }
-            return null;
+            }            
         }
 
     }

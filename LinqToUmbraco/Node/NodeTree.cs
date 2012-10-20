@@ -16,8 +16,6 @@ namespace meramedia.Linq.Core.Node
 
         private NodeDataProvider _provider;
 
-        private List<TDocTypeBase> _nodes;
-
         internal NodeTree(NodeDataProvider provider)
         {
             _provider = provider;
