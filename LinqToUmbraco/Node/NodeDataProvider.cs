@@ -362,22 +362,17 @@ namespace meramedia.Linq.Core.Node
 
         internal override DocTypeBase Find(int id)
         {
-            var node = NodeCache.GetNode<DocTypeBase>(id);
-            if (node == null)
-            {
-                Debug.WriteLine("Node not found in cache, trying xml..");
-                var xmlNode = Xml.Descendants().SingleOrDefault(d => d.Attribute("isDoc") != null && (int)d.Attribute("id") == id);                
-                return SetValuesFromXml<DocTypeBase>(xmlNode);                
-            }
-            return null;
+            return Find<DocTypeBase>(id);
         }
 
         internal override T Find<T>(int id)
         {
-            var attr = ReflectionAssistance.GetUmbracoInfoAttribute(typeof(T));
-            if (!NodeCache.ContainsKey(attr))
-                SetupNodeTree<T>(attr);
-
+            if (typeof(T) != typeof(DocTypeBase))
+            {
+                var attr = ReflectionAssistance.GetUmbracoInfoAttribute(typeof (T));
+                if (!NodeCache.ContainsKey(attr))
+                    SetupNodeTree<T>(attr);
+            }
             var node = NodeCache.GetNode<T>(id);
             if (node != null)
                 return node;
@@ -389,5 +384,35 @@ namespace meramedia.Linq.Core.Node
             }            
         }
 
+
+        internal override IEnumerable<DocTypeBase> FindAll(int[] ids)
+        {
+            return FindAll<DocTypeBase>(ids);
+        }
+
+        internal override IEnumerable<T> FindAll<T>(int[] ids)
+        {
+            if (typeof(T) != typeof(DocTypeBase))
+            {
+                var attr = ReflectionAssistance.GetUmbracoInfoAttribute(typeof(T));
+                if (!NodeCache.ContainsKey(attr))
+                    SetupNodeTree<T>(attr);
+            }
+
+
+            List<T> nodes = NodeCache.GetNodes<T>(ids).ToList();
+            if (nodes.Any())
+                foreach (T n in nodes)
+                    yield return n;
+            else
+            {
+                foreach (int id in ids)
+                {
+                    Debug.WriteLine("Node not found in cache, trying xml..");
+                    var xmlNode = Xml.Descendants().SingleOrDefault(d => d.Attribute("isDoc") != null && (int)d.Attribute("id") == id);
+                    yield return SetValuesFromXml<T>(xmlNode);
+                }
+            }  
+        }
     }
 }

@@ -74,5 +74,20 @@ namespace meramedia.Linq.Core
             }
             return null;
         }
+
+        internal static IEnumerable<T> GetNodes<T>(int[] ids) where T : DocTypeBase, new()
+        {
+            var tree = Trees.SingleOrDefault(x => x.Value is Tree<T>).Value;
+            if (tree != null)
+            {
+                foreach (int id in ids)
+                {
+                    var node = ((Tree<T>) tree).SingleOrDefault(x => x.Id == id);
+                    if (node != null)
+                        yield return node;
+                }
+            }         
+        }
+
     }
 }

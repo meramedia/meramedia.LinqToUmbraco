@@ -91,5 +91,14 @@ namespace meramedia.Linq.Core
         {
             return DataProvider.Find<T>(id);
         }
+
+        public IEnumerable<T> FindAll<T>(int[] ids) where T: DocTypeBase, new()
+        {
+            return DataProvider.FindAll<T>(ids);
+        }
+        public IEnumerable<DocTypeBase> FindAll(int[] ids)
+        {
+            return DataProvider.FindAll(ids);
+        }
     }
 }

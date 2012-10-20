@@ -178,5 +178,7 @@ namespace meramedia.Linq.Core
 
         internal abstract DocTypeBase Find(int id);
         internal abstract T Find<T>(int id) where T : DocTypeBase, new();
+        internal abstract IEnumerable<DocTypeBase> FindAll(int[] id);
+        internal abstract IEnumerable<T> FindAll<T>(int[] id) where T : DocTypeBase, new();
     }
 }
