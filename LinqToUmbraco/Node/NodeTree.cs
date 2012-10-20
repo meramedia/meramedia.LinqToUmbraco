@@ -45,20 +45,6 @@ namespace meramedia.Linq.Core.Node
         }
 
         /// <summary>
-        /// Indicates that the NodeTree is ReadOnly
-        /// </summary>
-        /// <value>
-        /// 	<c>true</c>
-        /// </value>
-        public override bool IsReadOnly
-        {
-            get
-            {
-                return true;
-            }
-        }
-
-        /// <summary>
         /// Gets the enumerator.
         /// </summary>
         /// <returns></returns>
@@ -91,30 +77,11 @@ namespace meramedia.Linq.Core.Node
         /// </summary>
         public override void ReloadCache()
         {
+            throw new NotImplementedException();
             _provider.CheckDisposed();
 
             var attr = ReflectionAssistance.GetUmbracoInfoAttribute(typeof(TDocTypeBase));
             _provider.SetupNodeTree<TDocTypeBase>(attr);
-        }
-
-        public override void InsertOnSubmit(TDocTypeBase item)
-        {
-            throw new NotImplementedException("The NodeTree does not support Inserting items");
-        }
-
-        public override void InsertAllOnSubmit(IEnumerable<TDocTypeBase> items)
-        {
-            throw new NotImplementedException("The NodeTree does not support Inserting items");
-        }
-
-        public override void DeleteOnSubmit(TDocTypeBase itemm)
-        {
-            throw new NotImplementedException("The NodeTree does not support Deleting items");
-        }
-
-        public override void DeleteAllOnSubmit(IEnumerable<TDocTypeBase> items)
-        {
-            throw new NotImplementedException("The NodeTree does not support Deleting items");
         }
     }
 }

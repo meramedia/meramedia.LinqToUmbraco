@@ -5,6 +5,9 @@ using System.Linq;
 using System.IO;
 using System.Xml.Linq;
 using System.Reflection;
+using umbraco.Linq.Core;
+using umbraco.cms.businesslogic;
+using umbraco.cms.businesslogic.web;
 using umbraco.presentation;
 using umbraco.cms.helpers;
 using umbraco.BusinessLogic.Utils;
@@ -29,7 +32,7 @@ namespace meramedia.Linq.Core.Node
                 return UmbracoContext.Current.Server.MapPath(UmbracoContext.Current.Server.ContentXmlPath);
             }
         }
-        private Dictionary<UmbracoInfoAttribute, IContentTree> _trees;        
+     
         private Dictionary<string, Type> _knownTypes;
 
 
@@ -56,13 +59,10 @@ namespace meramedia.Linq.Core.Node
         /// <summary>
         /// Initializes the NodeDataProvider, performing validation
         /// </summary>
-        private void Init()
-        {            
-
+        private static void Init()
+        {
             if (!File.Exists(XmlPath))
-                throw new FileNotFoundException("The XML used by the provider must exist", XmlPath);
-         
-            _trees = new Dictionary<UmbracoInfoAttribute, IContentTree>();
+                throw new FileNotFoundException("The XML used by the provider must exist", XmlPath);         
         }
 
         /// <summary>
@@ -83,7 +83,7 @@ namespace meramedia.Linq.Core.Node
         public override string Name { get { return "NodeDataProvider"; } }
 
         /// <summary>
-        /// Loads the tree with the relivent DocTypes from the XML
+        /// Loads the tree with the relevant DocTypes from the XML
         /// </summary>
         /// <typeparam name="TDocType">The type of the DocType to load.</typeparam>
         /// <returns><see cref="meramedia.Linq.Core.Node.NodeTree&lt;TDocType&gt;"/> representation of the content tree</returns>
@@ -94,26 +94,16 @@ namespace meramedia.Linq.Core.Node
 
             var attr = ReflectionAssistance.GetUmbracoInfoAttribute(typeof(TDocType));
 
-            if (!_trees.ContainsKey(attr))
+            if (!NodeCache.ContainsKey(attr))
                 SetupNodeTree<TDocType>(attr);
 
-            return (NodeTree<TDocType>)_trees[attr];
+            return NodeCache.GetTree<TDocType>(attr);
         }
 
         internal void SetupNodeTree<TDocType>(UmbracoInfoAttribute attr) where TDocType : DocTypeBase, new()
         {
-            var tree = new NodeTree<TDocType>(this);
-            if (!_trees.ContainsKey(attr))
-            {
-                lock (_lockObject)
-                {
-                    _trees.Add(attr, tree); //cache so it's faster to get next time  
-                }
-            }
-            else
-            {
-                _trees[attr] = tree;
-            }
+            var tree = new NodeTree<TDocType>(this);            
+            NodeCache.AddToCache(attr, tree);
         }
 
         /// <summary>
@@ -206,7 +196,7 @@ namespace meramedia.Linq.Core.Node
                 DocTypeBase instaceOfT = (DocTypeBase)Activator.CreateInstance(t); //create an instance of the type and down-cast so we can use it
                 LoadFromXml(node, instaceOfT);
                 instaceOfT.Provider = this;
-                //ancestors.Add(instaceOfT);
+
                 yield return instaceOfT;
             }
         }
@@ -238,9 +228,17 @@ namespace meramedia.Linq.Core.Node
         public override void Flush()
         {
             CheckDisposed();
-            
-            _trees.Clear();
-            Debug.WriteLine("Dataprovider flushed!");
+            NodeCache.ClearTrees();
+        }
+
+        // clear cache for changed node. The next get will take care of the loading
+        public override void NodeChanged(Content node)
+        {
+            if (KnownTypes.ContainsKey(node.ContentType.Alias))
+            {
+                Type type = KnownTypes[node.ContentType.Alias];
+                NodeCache.ClearTreeForNode(node);
+            }
         }
 
         /// <summary>
@@ -256,20 +254,7 @@ namespace meramedia.Linq.Core.Node
                 throw new DocTypeMismatchException(xml.Name.LocalName, ReflectionAssistance.GetUmbracoInfoAttribute(node.GetType()).Alias);
             }
 
-            node.Id = (int)xml.Attribute("id");
-            node.ParentNodeId = (int)xml.Attribute("parentID");
-            node.NodeName = (string)xml.Attribute("nodeName");
-            node.Version = (string)xml.Attribute("version");
-            node.CreateDate = (DateTime)xml.Attribute("createDate");
-            node.SortOrder = (int)xml.Attribute("sortOrder");
-            node.UpdateDate = (DateTime)xml.Attribute("updateDate");
-            node.CreatorID = (int)xml.Attribute("creatorID");
-            node.CreatorName = (string)xml.Attribute("creatorName");
-            node.WriterID = (int)xml.Attribute("writerID");
-            node.WriterName = (string)xml.Attribute("writerName");
-            node.Level = (int)xml.Attribute("level");
-            node.TemplateId = (int)xml.Attribute("template");
-            node.Path = (string)xml.Attribute("path");
+            SetValuesFromXml(xml, node);
 
             var properties = node.GetType().GetProperties(BindingFlags.Public | BindingFlags.Instance).Where(p => p.GetCustomAttributes(typeof(PropertyAttribute), true).Any());
             foreach (var p in properties)
@@ -339,6 +324,24 @@ namespace meramedia.Linq.Core.Node
                     }
                 }
             }
+        }
+
+        private static void SetValuesFromXml<T>(XElement xml, T node) where T : DocTypeBase
+        {
+            node.Id = (int) xml.Attribute("id");
+            node.ParentNodeId = (int) xml.Attribute("parentID");
+            node.NodeName = (string) xml.Attribute("nodeName");
+            node.Version = (string) xml.Attribute("version");
+            node.CreateDate = (DateTime) xml.Attribute("createDate");
+            node.SortOrder = (int) xml.Attribute("sortOrder");
+            node.UpdateDate = (DateTime) xml.Attribute("updateDate");
+            node.CreatorID = (int) xml.Attribute("creatorID");
+            node.CreatorName = (string) xml.Attribute("creatorName");
+            node.WriterID = (int) xml.Attribute("writerID");
+            node.WriterName = (string) xml.Attribute("writerName");
+            node.Level = (int) xml.Attribute("level");
+            node.TemplateId = (int) xml.Attribute("template");
+            node.Path = (string) xml.Attribute("path");
         }
     }
 }

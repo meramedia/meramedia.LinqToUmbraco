@@ -68,20 +68,6 @@ namespace meramedia.Linq.Core.Node
         }
 
         /// <summary>
-        /// Indicates that the NodeAssociationTree is ReadOnly
-        /// </summary>
-        /// <value>
-        /// 	<c>true</c>
-        /// </value>
-        public override bool IsReadOnly
-        {
-            get
-            {
-                return true;
-            }
-        }
-
-        /// <summary>
         /// Gets or sets the DataProvider associated with this Tree
         /// </summary>
         /// <value>The provider.</value>
@@ -93,26 +79,6 @@ namespace meramedia.Linq.Core.Node
         public override void ReloadCache()
         {
             LoadNodes();
-        }
-
-        public override void InsertOnSubmit(TDocTypeBase item)
-        {
-            throw new NotImplementedException("The NodeAssociationTree does not support Inserting items");
-        }
-
-        public override void InsertAllOnSubmit(IEnumerable<TDocTypeBase> items)
-        {
-            throw new NotImplementedException("The NodeAssociationTree does not support Inserting items");
-        }
-
-        public override void DeleteOnSubmit(TDocTypeBase itemm)
-        {
-            throw new NotImplementedException("The NodeAssociationTree does not support Deleting items");
-        }
-
-        public override void DeleteAllOnSubmit(IEnumerable<TDocTypeBase> items)
-        {
-            throw new NotImplementedException("The NodeAssociationTree does not support Deleting items");
         }
     }
 }

@@ -17,7 +17,6 @@ namespace meramedia.Linq.Core
     public abstract class Tree<TDocType> : IContentTree, IEnumerable<TDocType>
         where TDocType : DocTypeBase, new()
     {
-        #region IContentTree Members
 
         /// <summary>
         /// Gets the <see cref="umbracoDataProvider"/> Provider associated with this instance
@@ -25,25 +24,7 @@ namespace meramedia.Linq.Core
         /// <value>The provider.</value>
         public abstract UmbracoDataProvider Provider { get; protected set; }
 
-        /// <summary>
-        /// Gets a value indicating whether this instance is read only. The collection is not ReadOnly by default
-        /// </summary>
-        /// <value>
-        /// 	<c>false</c> to indicate that this collection isn't read-only
-        /// </value>
-        public virtual bool IsReadOnly
-        {
-            get
-            {
-                return false;
-            }
-        }
-
         public abstract void ReloadCache();
-
-        #endregion
-
-        #region IEnumerable<TDocType> Members
 
         /// <summary>
         /// Returns an enumerator that iterates through the collection.
@@ -53,36 +34,10 @@ namespace meramedia.Linq.Core
         /// </returns>
         public abstract IEnumerator<TDocType> GetEnumerator();
 
-        #endregion
-
-        #region IEnumerable Members
-
         IEnumerator IEnumerable.GetEnumerator()
         {
             return GetEnumerator();
         }
 
-        #endregion
-
-        /// <summary>
-        /// Insert an item on submit of the DataContext
-        /// </summary>
-        /// <param name="item">The item.</param>
-        public abstract void InsertOnSubmit(TDocType item);
-        /// <summary>
-        /// Insert a collection of items on submit of the DataContext
-        /// </summary>
-        /// <param name="items">The items.</param>
-        public abstract void InsertAllOnSubmit(IEnumerable<TDocType> items);
-        /// <summary>
-        /// Deletes an item on submit of the DataContext
-        /// </summary>
-        /// <param name="itemm">The itemm.</param>
-        public abstract void DeleteOnSubmit(TDocType itemm);
-        /// <summary>
-        /// Deletes a collection of items on submit of the DataContext
-        /// </summary>
-        /// <param name="items">The items.</param>
-        public abstract void DeleteAllOnSubmit(IEnumerable<TDocType> items);
     }
 }

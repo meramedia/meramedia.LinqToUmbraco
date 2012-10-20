@@ -21,7 +21,6 @@ namespace meramedia.Linq.Core
         {
             Debug.WriteLine("Dataprovider instantiated");
 
-            CMSNode.AfterNew += Document_AfterNew;
             Document.AfterPublish += Document_AfterPublish;
             Document.AfterUnPublish += Document_AfterUnPublish;
             Document.AfterDelete += Document_AfterDelete;
@@ -41,33 +40,32 @@ namespace meramedia.Linq.Core
             Flush();
         }
 
-        private void Document_AfterNew(object sender, NewEventArgs e)
-        {
-            Flush();
-        }
-
         private void Document_AfterPublish(Document sender, PublishEventArgs e)
         {
-            Flush();
+            Debug.WriteLine("Nodetree flushed! - AfterPublish");            
+            NodeChanged(sender);
         }
 
         private void Document_AfterUnPublish(Document sender, UnPublishEventArgs e)
         {
-            Flush();
+            Debug.WriteLine("Nodetree flushed! - AfterUnPublish");
+            NodeChanged(sender);
         }
 
         private void Document_AfterDelete(Document sender, DeleteEventArgs e)
         {
-            Flush();
+            Debug.WriteLine("Nodetree flushed! - AfterDelete");
+            NodeChanged(sender);
         }
 
         private void Document_AfterMoveToTrash(Document sender, MoveToTrashEventArgs e)
         {
-            Flush();
+            Debug.WriteLine("Nodetree flushed! - AfterMoveToTrash");
+            NodeChanged(sender);
         }
 
         public abstract void Flush();
-    
+        public abstract void NodeChanged(Content node);
 
         /// <summary>
         /// Indicates the disposal status of the current provider
