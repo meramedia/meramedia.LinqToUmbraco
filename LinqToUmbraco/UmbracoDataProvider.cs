@@ -1,9 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using umbraco.BusinessLogic.Actions;
 using umbraco.cms.businesslogic;
 using umbraco.cms.businesslogic.media;
 using umbraco.cms.businesslogic.web;
+using umbraco.interfaces;
 
 namespace meramedia.Linq.Core
 {
@@ -15,7 +17,7 @@ namespace meramedia.Linq.Core
     /// 
     /// It provides abstractions for all the useful operations of the DataProvider
     /// </remarks>
-    public abstract class UmbracoDataProvider : IDisposable
+    public abstract class UmbracoDataProvider : IDisposable, IActionHandler
     {
         protected UmbracoDataProvider()
         {
@@ -37,6 +39,7 @@ namespace meramedia.Linq.Core
 
         void content_AfterRefreshContent(Document sender, RefreshContentEventArgs e)
         {
+            Debug.WriteLine("All Trees flushed! - RefreshContent");   
             Flush();
         }
 
@@ -146,6 +149,31 @@ namespace meramedia.Linq.Core
         }
 
         #endregion
+
+
+        // Flush cache on Sort
+        // NOTE: There is a bug right now (2012-10-20) in umbraco so when sorting top level nodes the action is not triggered
+        public bool Execute(Document sender, IAction action)
+        {
+            if (action == ActionSort.Instance)
+            {
+                Debug.WriteLine("Nodetree flushed! - Sort");
+                NodeChanged(sender);
+            }
+                
+
+            return true;
+        }
+
+        public string HandlerName()
+        {
+            return "meramedia.Linq.Core.UmbracoDataProvider.SortActionHandler";
+        }
+
+        public IAction[] ReturnActions()
+        {
+            return new IAction[] { ActionSort.Instance };
+        }
 
     }
 }
