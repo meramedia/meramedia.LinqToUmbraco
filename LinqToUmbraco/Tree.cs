@@ -1,5 +1,8 @@
-﻿using System.Collections.Generic;
+﻿using System;
 using System.Collections;
+using System.Collections.Generic;
+using System.Linq;
+using System.Xml.Linq;
 
 namespace meramedia.Linq.Core
 {
@@ -17,6 +20,7 @@ namespace meramedia.Linq.Core
     public abstract class Tree<TDocType> : IContentTree, IEnumerable<TDocType>
         where TDocType : DocTypeBase, new()
     {
+        private List<TDocType> _nodes;
 
         /// <summary>
         /// Gets the <see cref="umbracoDataProvider"/> Provider associated with this instance
@@ -42,5 +46,14 @@ namespace meramedia.Linq.Core
             return GetEnumerator();
         }
 
+        public IEnumerable<TDocType> FindAll(int[] ids)
+        {
+            return ids.Select(id => _nodes.SingleOrDefault(x => x.Id == id));
+        }
+
+        public TDocType Find(int id)
+        {
+            return _nodes.SingleOrDefault(x => x.Id == id);
+        }
     }
 }

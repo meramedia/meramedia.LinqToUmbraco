@@ -23,7 +23,6 @@ namespace meramedia.Linq.Core.Node
     /// </remarks>
     public sealed class NodeDataProvider : UmbracoDataProvider
     {
-        private readonly object _lockObject = new object();
         private static string XmlPath
         {
             get
@@ -233,11 +232,8 @@ namespace meramedia.Linq.Core.Node
         // clear cache for changed node. The next get will take care of the loading
         public override void NodeChanged(Content node)
         {
-            if (KnownTypes.ContainsKey(node.ContentType.Alias))
-            {
-                Type type = KnownTypes[node.ContentType.Alias];
-                NodeCache.ClearTreeForNode(node);
-            }
+            if (KnownTypes.ContainsKey(node.ContentType.Alias))            
+                NodeCache.ClearTreeForNode(node);            
         }
 
         /// <summary>
@@ -325,6 +321,26 @@ namespace meramedia.Linq.Core.Node
             }
         }
 
+        private static T SetValuesFromXml<T>(XElement xml) where T : DocTypeBase, new()
+        {
+            return new T
+                {
+                    Id = (int) xml.Attribute("id"),
+                    ParentNodeId = (int) xml.Attribute("parentID"),
+                    NodeName = (string) xml.Attribute("nodeName"),
+                    Version = (string) xml.Attribute("version"),
+                    CreateDate = (DateTime) xml.Attribute("createDate"),
+                    SortOrder = (int) xml.Attribute("sortOrder"),
+                    UpdateDate = (DateTime) xml.Attribute("updateDate"),
+                    CreatorID = (int) xml.Attribute("creatorID"),
+                    CreatorName = (string) xml.Attribute("creatorName"),
+                    WriterID = (int) xml.Attribute("writerID"),
+                    WriterName = (string) xml.Attribute("writerName"),
+                    Level = (int) xml.Attribute("level"),
+                    TemplateId = (int) xml.Attribute("template"),
+                    Path = (string) xml.Attribute("path")
+                };
+        }
         private static void SetValuesFromXml<T>(XElement xml, T node) where T : DocTypeBase
         {
             node.Id = (int) xml.Attribute("id");
@@ -341,6 +357,36 @@ namespace meramedia.Linq.Core.Node
             node.Level = (int) xml.Attribute("level");
             node.TemplateId = (int) xml.Attribute("template");
             node.Path = (string) xml.Attribute("path");
+
         }
+
+        internal override DocTypeBase Find(int id)
+        {
+            var node = NodeCache.GetNode<DocTypeBase>(id);
+            if (node == null)
+            {
+                Debug.WriteLine("Node not found in cache, trying xml..");
+                var xmlNode = Xml.Descendants().SingleOrDefault(d => d.Attribute("isDoc") != null && (int)d.Attribute("id") == id);                
+                return SetValuesFromXml<DocTypeBase>(xmlNode);                
+            }
+            return null;
+        }
+
+        internal override T Find<T>(int id)
+        {
+            var attr = ReflectionAssistance.GetUmbracoInfoAttribute(typeof(T));
+            if (!NodeCache.ContainsKey(attr))
+                SetupNodeTree<T>(attr);
+
+            var node = NodeCache.GetNode<T>(id);
+            if (node == null)
+            {
+                Debug.WriteLine("Node not found in cache, trying xml..");
+                var xmlNode = Xml.Descendants().SingleOrDefault(d => d.Attribute("isDoc") != null && (int)d.Attribute("id") == id);
+                return SetValuesFromXml<T>(xmlNode);
+            }
+            return null;
+        }
+
     }
 }

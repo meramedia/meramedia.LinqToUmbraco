@@ -35,21 +35,44 @@ namespace meramedia.Linq.Core
 
         internal static void ClearTrees()
         {
-            Trees.Clear();
-            Debug.WriteLine("All trees flushed!");
+            lock (CacheLock)
+            {
+                Trees.Clear();
+                Debug.WriteLine("All trees flushed!");
+            }
         }
 
         internal static void ClearTreeForNode(Content changedNode)
         {
-            var docType = changedNode.ContentType.Alias;
-            var key = new UmbracoInfoAttribute(docType);
-            ClearTree(key);
+            lock (CacheLock)
+            {
+                var docType = changedNode.ContentType.Alias;
+                var key = new UmbracoInfoAttribute(docType);
+                ClearTree(key);
+            }
         }
 
         internal static void ClearTree(UmbracoInfoAttribute key)
         {
-            if (Trees.ContainsKey(key))
-                Trees.Remove(key);     
+            lock (CacheLock)
+            {
+                if (Trees.ContainsKey(key))
+                    Trees.Remove(key);   
+            }  
+        }
+
+        internal static T GetNode<T>(int id) where T : DocTypeBase, new()
+        {
+            foreach (var tree in Trees)
+            {
+                if (tree.Value is Tree<T>)
+                {
+                    var node = ((Tree<T>)tree.Value).SingleOrDefault(x => x.Id == id);
+                    if (node != null)
+                        return node;
+                }
+            }
+            return null;
         }
     }
 }

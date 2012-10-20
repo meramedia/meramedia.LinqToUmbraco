@@ -11,12 +11,12 @@ namespace meramedia.Linq.Core.Node
     public sealed class NodeAssociationTree<TDocTypeBase> : AssociationTree<TDocTypeBase> where TDocTypeBase : DocTypeBase, new()
     {
         private readonly object _lockObject = new object();
-        private IEnumerable<TDocTypeBase> _nodes;
+        private List<TDocTypeBase> _nodes;
 
         internal NodeAssociationTree(IEnumerable<TDocTypeBase> nodes)
         {
             _nodes = new List<TDocTypeBase>();
-            _nodes = nodes;
+            _nodes = nodes.ToList();
         }
 
         /// <summary>
@@ -62,7 +62,7 @@ namespace meramedia.Linq.Core.Node
                         .Single()
                         .Elements()
                         .Where(x => x.Attribute("isDoc") != null);
-                    _nodes = provider.DynamicNodeCreation(rawNodes).Cast<TDocTypeBase>(); //drop is back to the type which was asked for 
+                    _nodes = provider.DynamicNodeCreation(rawNodes).Cast<TDocTypeBase>().ToList(); //drop is back to the type which was asked for 
                 }
             }
         }
@@ -80,5 +80,6 @@ namespace meramedia.Linq.Core.Node
         {
             LoadNodes();
         }
+
     }
 }

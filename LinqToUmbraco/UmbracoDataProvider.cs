@@ -175,5 +175,8 @@ namespace meramedia.Linq.Core
             return new IAction[] { ActionSort.Instance };
         }
 
+
+        internal abstract DocTypeBase Find(int id);
+        internal abstract T Find<T>(int id) where T : DocTypeBase, new();
     }
 }

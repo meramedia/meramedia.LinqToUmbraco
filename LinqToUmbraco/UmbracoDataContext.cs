@@ -81,5 +81,15 @@ namespace meramedia.Linq.Core
         }
 
         #endregion
+
+        public DocTypeBase Find(int id)
+        {
+            return DataProvider.Find(id);
+        }
+
+        public T Find<T>(int id) where T: DocTypeBase, new()
+        {
+            return DataProvider.Find<T>(id);
+        }
     }
 }
