@@ -10,6 +10,9 @@ using umbraco.cms.businesslogic.web;
 
 namespace meramedia.Linq.Core
 {
+    /// <summary>
+    /// Class for handling the caching of the nodetrees
+    /// </summary>
     internal static class NodeCache
     {
         private static readonly Dictionary<UmbracoInfoAttribute, IContentTree> Trees = new Dictionary<UmbracoInfoAttribute, IContentTree>();

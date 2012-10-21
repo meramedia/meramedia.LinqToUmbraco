@@ -54,24 +54,10 @@ namespace meramedia.Linq.Core.Node
             }
         }
 
-        /// <summary>
-        /// Initializes the NodeDataProvider, performing validation
-        /// </summary>
-        private static void Init()
-        {
-            if (!File.Exists(XmlPath))
-                throw new FileNotFoundException("The XML used by the provider must exist", XmlPath);         
-        }
-
-        /// <summary>
-        /// Initializes a new instance of the <see cref="NodeDataProvider"/> class
-        /// </summary>
-        /// <remarks>
-        /// This constructor is ideal for unit testing as it allows for the XML to be located anywhere
-        /// </remarks>
         public NodeDataProvider()
         {
-            Init();
+            if (!File.Exists(XmlPath))
+                throw new FileNotFoundException("The XML used by the provider must exist", XmlPath);        
         }
 
         /// <summary>

@@ -121,6 +121,7 @@
     <Compile Include="Dashboard\TemplateConstants.cs" />
     <Compile Include="IContentTree.cs" />
     <Compile Include="IDocTypeBase.cs" />
+    <Compile Include="MediaCache.cs" />
     <Compile Include="NodeCache.cs" />
     <Compile Include="UmbracoDataProvider.cs" />
     <Compile Include="Node\NodeAssociationTree.cs" />

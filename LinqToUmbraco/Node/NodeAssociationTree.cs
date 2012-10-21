@@ -14,7 +14,7 @@ namespace meramedia.Linq.Core.Node
 
         internal NodeAssociationTree(IEnumerable<TDocTypeBase> nodes)
         {
-            _nodes = new List<TDocTypeBase>();
+            //_nodes = new List<TDocTypeBase>();
             _nodes = nodes.ToList();
         }
 
