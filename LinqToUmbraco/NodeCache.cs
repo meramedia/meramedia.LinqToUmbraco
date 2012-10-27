@@ -12,8 +12,7 @@ namespace meramedia.Linq.Core
 {
     /// <summary>
     /// Class for handling the caching of the nodetrees
-    /// </summary>
-    /// //TODO: needs some kind of way of flushing old items out, otherwise memory consumption will grow forever
+    /// </summary>    
     internal static class NodeCache
     {
         private static readonly Dictionary<UmbracoInfoAttribute, IContentTree> Trees = new Dictionary<UmbracoInfoAttribute, IContentTree>();
@@ -26,9 +25,12 @@ namespace meramedia.Linq.Core
 
         internal static void AddToCache(UmbracoInfoAttribute attr, IContentTree tree)
         {
-            lock (CacheLock)
+            if (!Trees.ContainsKey(attr))
             {
-                Trees.Add(attr, tree); 
+                lock (CacheLock)
+                {
+                    Trees.Add(attr, tree);
+                }
             }
         }
 
@@ -61,21 +63,21 @@ namespace meramedia.Linq.Core
             lock (CacheLock)
             {
                 if (Trees.ContainsKey(key))
-                    Trees.Remove(key);   
+                    Trees.Remove(key);
+                Debug.WriteLine(key.DisplayName + " tree flushed!");
             }  
         }
 
         internal static T GetNode<T>(int id) where T : DocTypeBase, new()
         {
-            foreach (var tree in Trees)
+            var tree = Trees.SingleOrDefault(x => x.Value is Tree<T>).Value;
+            if (tree != null)
             {
-                if (tree.Value is Tree<T>)
-                {
-                    var node = ((Tree<T>)tree.Value).SingleOrDefault(x => x.Id == id);
-                    if (node != null)
-                        return node;
-                }
+                var node = ((Tree<T>)tree).SingleOrDefault(x => x.Id == id);
+                if (node != null)
+                    return node;
             }
+
             return null;
         }
 

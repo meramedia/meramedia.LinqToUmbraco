@@ -74,22 +74,7 @@ namespace meramedia.Linq.Core.Dashboard
 		[Property()]
 		[System.Runtime.Serialization.DataMemberAttribute()]
 		public virtual {0} {1}
-		{{
-			get
-			{{
-				return _{1};
-			}}
-			set
-			{{
-				if ((_{1} != value))
-				{{
-					RaisePropertyChanging();
-					_{1} = value;
-                    IsDirty = true;
-					RaisePropertyChanged(""{1}"");
-				}}
-			}}
-		}}";
+		{{ get; set;}}";
 
         internal readonly static string CHILD_RELATIONS_TEMPLATE = @"
 		private AssociationTree<{0}> _{0}s;

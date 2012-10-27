@@ -60,7 +60,6 @@ namespace meramedia.Linq.Core.Node
                         var dt = new TDocTypeBase();
                         _provider.LoadFromXml(n, dt);
 
-                        dt.IsDirty = false;
                         dt.Provider = _provider;
 
                         _nodes.Add(dt);

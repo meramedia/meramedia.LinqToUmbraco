@@ -4,18 +4,12 @@ using System.Linq;
 using System.Text;
 using System.Xml.Linq;
 using meramedia.Linq.Core.Node;
+using umbraco.presentation;
 
 namespace meramedia.Linq.Core
 {
-    /// <summary>
-    /// The umbracoDataContext which handles the interaction with an <see cref="UmbracoDataProvider"/>
-    /// </summary>
     public abstract class UmbracoDataContext : IDisposable
     {
-        /// <summary>
-        /// Gets the data provider.
-        /// </summary>
-        /// <value>The data provider.</value>
         private static readonly Lazy<UmbracoDataProvider> _dataProvider = new Lazy<UmbracoDataProvider>(() => new NodeDataProvider());
         public UmbracoDataProvider DataProvider
         {
@@ -91,16 +85,40 @@ namespace meramedia.Linq.Core
         {
             return DataProvider.Find<T>(id);
         }
-
         public IEnumerable<T> FindAll<T>(int[] ids) where T: DocTypeBase, new()
         {
             return DataProvider.FindAll<T>(ids);
+        }
+        public IEnumerable<T> FindAll<T>(IEnumerable<int> ids) where T : DocTypeBase, new()
+        {
+            return DataProvider.FindAll<T>(ids.ToArray());
         }
         public IEnumerable<DocTypeBase> FindAll(int[] ids)
         {
             return DataProvider.FindAll(ids);
         }
+        public IEnumerable<DocTypeBase> FindAll(IEnumerable<int> ids)
+        {
+            return DataProvider.FindAll(ids.ToArray());
+        }
 
+        public DocTypeBase CurrentPage
+        {
+            get
+            {
+                if (UmbracoContext.Current.PageId.HasValue)
+                    return DataProvider.Find(UmbracoContext.Current.PageId.Value);
+                else return null;
+            }
+        }
+
+        public T GetCurrentPage<T>() where T: DocTypeBase, new()
+        {
+            if (UmbracoContext.Current.PageId.HasValue)
+                return DataProvider.Find<T>(UmbracoContext.Current.PageId.Value);
+            else return null;
+        }
+    
         public MediaCache Media
         {
             get

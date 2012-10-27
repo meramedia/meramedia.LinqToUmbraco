@@ -31,25 +31,26 @@ namespace meramedia.Linq.Core
             // Republish entire site
             umbraco.content.AfterRefreshContent += content_AfterRefreshContent;
             
-            Media.AfterNew += Media_AfterNew;
             Media.AfterMoveToTrash += Media_AfterMoveToTrash;
             Media.AfterDelete += Media_AfterDelete;
+            Media.AfterSave += Media_AfterSave;
+        }
+
+        private static void Media_AfterSave(Media sender, SaveEventArgs e)
+        {
+            MediaCache.Instance.Flush(sender.Id);
         }
 
         private static void Media_AfterDelete(Media sender, DeleteEventArgs e)
         {
-            MediaCache.Instance.Flush();
+            MediaCache.Instance.Flush(sender.Id);
         }
 
         private static void Media_AfterMoveToTrash(Media sender, MoveToTrashEventArgs e)
         {
-            MediaCache.Instance.Flush();
+            MediaCache.Instance.Flush(sender.Id);
         }
 
-        private static void Media_AfterNew(object sender, NewEventArgs e)
-        {
-            MediaCache.Instance.Flush();
-        }
 
         private void content_AfterRefreshContent(Document sender, RefreshContentEventArgs e)
         {
@@ -194,5 +195,6 @@ namespace meramedia.Linq.Core
         internal abstract T Find<T>(int id) where T : DocTypeBase, new();
         internal abstract IEnumerable<DocTypeBase> FindAll(int[] id);
         internal abstract IEnumerable<T> FindAll<T>(int[] id) where T : DocTypeBase, new();
+        
     }
 }

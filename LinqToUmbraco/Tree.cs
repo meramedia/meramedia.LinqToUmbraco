@@ -16,7 +16,6 @@ namespace meramedia.Linq.Core
     /// Implementers of this type will need to provide a manner of retrieving the TDocType from the DataProvider
     /// </remarks>
     /// <typeparam name="TDocType">The type of the DocType.</typeparam>
-    [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Naming", "CA1710:IdentifiersShouldHaveCorrectSuffix")]
     public abstract class Tree<TDocType> : IContentTree, IEnumerable<TDocType>
         where TDocType : DocTypeBase, new()
     {
@@ -61,4 +60,5 @@ namespace meramedia.Linq.Core
             get { return _nodes.Count; }
         }
     }
+
 }

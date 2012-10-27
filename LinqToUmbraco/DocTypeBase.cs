@@ -14,26 +14,18 @@ namespace meramedia.Linq.Core
     [DataContract]
     public class DocTypeBase : IDocTypeBase //This class should be abstract but it can't be done AND achieve the Children property like this
     {
-        #region Internal Storage
-        private int _id;
-        private string _nodeName;
-        private string _versionId;
-        private int _templateId;
+
         private int _parentId;
         private User _writer;
         private User _creator;
-        private string _path;
         private IEnumerable<DocTypeBase> _ancestors;
         private AssociationTree<DocTypeBase> _children;
-        #endregion
 
         /// <summary>
         /// Initializes a new instance of the <see cref="DocTypeBase"/> class.
         /// </summary>
         public DocTypeBase()
-        {
-            IsDirty = true;
-        }
+        { }
 
         /// <summary>
         /// Gets or sets the provider.
@@ -41,59 +33,14 @@ namespace meramedia.Linq.Core
         /// <value>The provider.</value>
         protected internal UmbracoDataProvider Provider { get; set; }
 
-        /// <summary>
-        /// Gets or sets a value indicating whether this instance has been modified since it was first loaded
-        /// </summary>
-        /// <value><c>true</c> if this instance has been modified; otherwise, <c>false</c>.</value>
-        public bool IsDirty { get; protected internal set; }
 
         #region Fields
-        /// <summary>
-        /// Gets or sets the id of the umbraco item
-        /// </summary>
-        /// <value>The id.</value>
-        [Field]
-        [UmbracoInfo("id", DisplayName = "Id", Mandatory = true), DataMember(Name = "Id")]
-        public virtual int Id
-        {
-            get
-            {
-                return _id;
-            }
-            protected internal set
-            {
-                if (_id != value)
-                {
-                    RaisePropertyChanging();
-                    _id = value;
-                    RaisePropertyChanged("Id");
-                }
-            }
-        }
 
-        /// <summary>
-        /// Gets or sets the name (title) of the umbraco item
-        /// </summary>
-        /// <value>The name.</value>
-        [Field]
-        [UmbracoInfo("nodeName", DisplayName = "NodeName", Mandatory = true), DataMember(Name = "NodeName")]
-        public virtual string NodeName
-        {
-            get
-            {
-                return _nodeName;
-            }
-            set
-            {
-                if (_nodeName != value)
-                {
-                    RaisePropertyChanging();
-                    _nodeName = value;
-                    IsDirty = true;
-                    RaisePropertyChanged("NodeName");
-                }
-            }
-        }
+        [Field, UmbracoInfo("id", DisplayName = "Id", Mandatory = true), DataMember(Name = "Id")]
+        public virtual int Id { get; internal set; }
+
+        [Field, UmbracoInfo("nodeName", DisplayName = "NodeName", Mandatory = true), DataMember(Name = "NodeName")]
+        public virtual string NodeName { get; internal set; }
 
         [Field]
         [Obsolete("Name property is obsolete, use NodeName instead")] //this is because most people expect NodeName not Name as the property
@@ -103,63 +50,14 @@ namespace meramedia.Linq.Core
             {
                 return NodeName;
             }
-            set
-            {
-                NodeName = value;
-            }
         }
 
-        /// <summary>
-        /// Gets or sets the template ID of the umbraco item
-        /// </summary>
-        /// <value>The name.</value>
-        [Field]
-        [UmbracoInfo("template", DisplayName = "Template", Mandatory = true), DataMember(Name = "TemplateId")]
-        public virtual int TemplateId
-        {
-            get
-            {
-                return _templateId;
-            }
-            set
-            {
-                if (_templateId != value)
-                {
-                    RaisePropertyChanging();
-                    _templateId = value;
-                    IsDirty = true;
-                    RaisePropertyChanged("Template");
-                }
-            }
-        }
+        [Field, UmbracoInfo("template", DisplayName = "Template", Mandatory = true), DataMember(Name = "TemplateId")]
+        public virtual int TemplateId { get; internal set; }
 
-        /// <summary>
-        /// Gets or sets the version of the umbraco item
-        /// </summary>
-        /// <value>The version.</value>
-        [Field]
-        [UmbracoInfo("version", DisplayName = "Version", Mandatory = true), DataMember(Name = "Version")]
-        public virtual string Version
-        {
-            get
-            {
-                return _versionId;
-            }
-            protected internal set
-            {
-                if (_versionId != value)
-                {
-                    RaisePropertyChanging();
-                    _versionId = value;
-                    RaisePropertyChanged("Version");
-                }
-            }
-        }
+        [Field, UmbracoInfo("version", DisplayName = "Version", Mandatory = true), DataMember(Name = "Version")]
+        public virtual string Version { get; internal set; }
 
-        /// <summary>
-        /// Gets or sets the ID of the parent node.
-        /// </summary>
-        /// <value>The parent node id.</value>
         [Field]
         [UmbracoInfo("parentID", DisplayName = "ParentId", Mandatory = true), DataMember(Name = "ParentId")]
         public virtual int ParentNodeId
@@ -168,72 +66,28 @@ namespace meramedia.Linq.Core
             {
                 return _parentId;
             }
-            set
-            {
-                if (_parentId != value)
-                {
-                    RaisePropertyChanging();
-                    _parentId = value;
-                    RaisePropertyChanged("ParentId");
-                }
-            }
+            internal set { _parentId = value; }
         }
 
-        /// <summary>
-        /// Gets or sets the created date.
-        /// </summary>
-        /// <value>The create date.</value>
         [Field]
         [UmbracoInfo("createDate", DisplayName = "CreateDate"), DataMember(Name = "CreateDate")]
         public virtual DateTime CreateDate { get; set; }
 
-        /// <summary>
-        /// Gets or sets the sort order.
-        /// </summary>
-        /// <value>The sort order.</value>
         [Field]
         [UmbracoInfo("sortOrder", DisplayName = "SortOrder"), DataMember(Name = "SortOrder")]
         public virtual int SortOrder { get; set; }
 
-        /// <summary>
-        /// Gets or sets the last updated date of the current version
-        /// </summary>
-        /// <value>The update date.</value>
         [Field]
         [UmbracoInfo("updateDate", DisplayName = "UpdateDate"), DataMember(Name = "UpdateDate")]
         public virtual DateTime UpdateDate { get; set; }
 
-        /// <summary>
-        /// Gets or sets the level of this item in the content tree
-        /// </summary>
-        /// <value>The level.</value>
         [Field]
         [UmbracoInfo("level", DisplayName = "Level"), DataMember(Name = "Level")]
         public virtual int Level { get; set; }
 
-        /// <summary>
-        /// Gets or sets the path.
-        /// </summary>
-        /// <value>The path.</value>
-        [Field]
-        [UmbracoInfo("path", DisplayName = "Path")]
-        [DataMember(Name = "Path")]
-        public virtual string Path
-        {
-            get
-            {
-                return _path;
-            }
-            set
-            {
-                if (_path != value)
-                {
-                    RaisePropertyChanging();
-                    _path = value;
-                    RaisePropertyChanged("Path");
-                }
-            }
-        }
+        [Field, UmbracoInfo("path", DisplayName = "Path"), DataMember(Name = "Path")]
+        public virtual string Path { get; internal set; }
+
         #endregion
 
         #region Parents and Children
@@ -302,16 +156,8 @@ namespace meramedia.Linq.Core
         }
         #endregion
 
-        /// <summary>
-        /// Gets or sets the creator ID.
-        /// </summary>
-        /// <value>The creator ID.</value>
         public int CreatorID { get; internal set; }
 
-        /// <summary>
-        /// Gets the umbraco user who created the item
-        /// </summary>
-        /// <value>The creator.</value>
         public virtual User Creator
         {
             get { return _creator ?? (_creator = new User(CreatorID)); }
@@ -319,62 +165,14 @@ namespace meramedia.Linq.Core
 
         public virtual string CreatorName { get; internal set; }
 
-        /// <summary>
-        /// ID of the user who last edited the item
-        /// </summary>
         public int WriterID { get; internal set; }
 
-        /// <summary>
-        /// Gets the umbraco user who last edited the instance
-        /// </summary>
-        /// <value>The writer.</value>
         public virtual User Writer
         {
             get { return _writer ?? (_writer = new User(WriterID)); }
         }
 
         public virtual string WriterName { get; internal set; }
-
-        /// <summary>
-        /// Raises the property changing event.
-        /// </summary>        
-        protected virtual void RaisePropertyChanging()
-        {
-            if (PropertyChanging != null)
-            {
-                PropertyChanging(this, new PropertyChangingEventArgs(String.Empty));
-            }
-        }
-
-        /// <summary>
-        /// Raises the property changed event.
-        /// </summary>
-        /// <param name="name">The name of the changed property.</param>        
-        protected virtual void RaisePropertyChanged(string name)
-        {
-            if (PropertyChanged != null)
-            {
-                PropertyChanged(this, new PropertyChangedEventArgs(name));
-            }
-        }
-
-        #region INotifyPropertyChanging Members
-
-        /// <summary>
-        /// Occurs when a property value is changing.
-        /// </summary>
-        public event PropertyChangingEventHandler PropertyChanging;
-
-        #endregion
-
-        #region INotifyPropertyChanged Members
-
-        /// <summary>
-        /// Occurs when a property value changes.
-        /// </summary>
-        public event PropertyChangedEventHandler PropertyChanged;
-
-        #endregion
 
         protected void ValidateProperty(string regex, string value)
         {

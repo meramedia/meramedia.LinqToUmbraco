@@ -31,7 +31,7 @@ namespace meramedia.Linq.Core.Node
             }
         }
      
-        private Dictionary<string, Type> _knownTypes;
+
 
 
         internal XDocument Xml
@@ -173,10 +173,9 @@ namespace meramedia.Linq.Core.Node
         /// <returns>Collecton of .NET types from the XML</returns>
         internal IEnumerable<DocTypeBase> DynamicNodeCreation(IEnumerable<XElement> elements)
         {
-
             foreach (XElement node in elements)
             {                
-                Type t = KnownTypes[Casing.SafeAlias(node.Name.LocalName)];
+                Type t = Types.KnownTypes[Casing.SafeAlias(node.Name.LocalName)];
                 DocTypeBase instaceOfT = (DocTypeBase)Activator.CreateInstance(t); //create an instance of the type and down-cast so we can use it
                 LoadFromXml(node, instaceOfT);
                 instaceOfT.Provider = this;
@@ -185,26 +184,7 @@ namespace meramedia.Linq.Core.Node
             }
         }
 
-        internal Dictionary<string, Type> KnownTypes
-        {
-            get
-            {
-                if (_knownTypes == null)
-                {
-                    _knownTypes = new Dictionary<string, Type>();
-                    var types = TypeFinder
-                        .FindClassesOfType<DocTypeBase>()
-                        .Where(t => t != typeof(DocTypeBase))
-                        .ToDictionary(k => ((UmbracoInfoAttribute)k.GetCustomAttributes(typeof(UmbracoInfoAttribute), true)[0]).Alias);
 
-                    foreach (var type in types)
-                        _knownTypes.Add(Casing.SafeAlias(type.Key), type.Value);
-
-                }
-
-                return _knownTypes;
-            }
-        }
 
         /// <summary>
         /// Flushes the cache for this provider
@@ -219,8 +199,7 @@ namespace meramedia.Linq.Core.Node
         // clear cache for changed node. The next get will take care of the loading
         public override void NodeChanged(Content node)
         {
-            if (KnownTypes.ContainsKey(node.ContentType.Alias))            
-                NodeCache.ClearTreeForNode(node);            
+            NodeCache.ClearTreeForNode(node);            
         }
 
         /// <summary>

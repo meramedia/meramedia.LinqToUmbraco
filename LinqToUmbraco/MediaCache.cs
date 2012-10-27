@@ -1,17 +1,19 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using umbraco.cms.businesslogic.media;
 
 namespace meramedia.Linq.Core
 {
-    //TODO: needs some kind of way of flushing old items out, otherwise memory consumption will grow forever
     public class MediaCache
     {
         private static Dictionary<int, Media> _cache;
 
         private const int MAX_NUM_ITEMS = 400;
+
+        private static readonly object CacheLock = new object();
 
         private static MediaCache _instance;
         public static MediaCache Instance
@@ -30,10 +32,13 @@ namespace meramedia.Linq.Core
             if (cached == null)
             {
                 cached = new Media(id);
-                _cache.Add(cached.Id, cached);
+                lock (CacheLock)
+                {
+                    _cache.Add(cached.Id, cached);
 
-                if (_cache.Count > MAX_NUM_ITEMS)
-                    _cache.Remove(_cache.First().Key);
+                    if (_cache.Count > MAX_NUM_ITEMS)
+                        _cache.Remove(_cache.First().Key);
+                }
             }
             return cached;
 
@@ -47,11 +52,15 @@ namespace meramedia.Linq.Core
             {
                 foreach (var m in ids.Where(x => !cached.Select(m => m.Id).Contains(x)).Select(id => new Media(id)))
                 {
-                    _cache.Add(m.Id, m);
+                    lock (CacheLock)
+                    {
+                        _cache.Add(m.Id, m);                        
+
+                        if (_cache.Count > MAX_NUM_ITEMS)
+                            _cache.Remove(_cache.First().Key);
+                    }
                     cached.Add(m);
 
-                    if (_cache.Count > MAX_NUM_ITEMS)
-                        _cache.Remove(_cache.First().Key);
                 }                    
             }
             return cached;
@@ -59,7 +68,24 @@ namespace meramedia.Linq.Core
 
         internal void Flush()
         {
-            _cache.Clear();
+            lock (CacheLock)
+            {
+                _cache.Clear();    
+            }
+            
+            Debug.WriteLine("All mediaitems flushed!");
+        }
+
+        internal void Flush(int id)
+        {
+            if (_cache.ContainsKey(id))
+            {
+                lock (CacheLock)
+                {
+                    _cache.Remove(id);    
+                }                
+                Debug.WriteLine("Media id: " + id + "flushed!");
+            }
         }
 
         internal int NumItemsInCache()

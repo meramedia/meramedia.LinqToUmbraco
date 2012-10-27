@@ -115,6 +115,7 @@
     <Compile Include="IDocTypeBase.cs" />
     <Compile Include="MediaCache.cs" />
     <Compile Include="NodeCache.cs" />
+    <Compile Include="Types.cs" />
     <Compile Include="UmbracoDataProvider.cs" />
     <Compile Include="Node\NodeAssociationTree.cs" />
     <Compile Include="Node\NodeTree.cs" />
@@ -125,7 +126,6 @@
     <Compile Include="Exceptions.cs" />
     <Compile Include="ReflectionAssistance.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Switch.cs" />
   </ItemGroup>
   <ItemGroup>
     <BootstrapperPackage Include="Microsoft.Net.Client.3.5">
