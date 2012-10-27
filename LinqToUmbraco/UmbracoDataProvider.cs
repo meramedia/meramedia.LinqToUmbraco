@@ -30,14 +30,28 @@ namespace meramedia.Linq.Core
 
             // Republish entire site
             umbraco.content.AfterRefreshContent += content_AfterRefreshContent;
-
-            //TODO: more events for media caching support
-            //Media.AfterNew
-            //Media.AfterMoveToTrash
-            //Media.AfterDelete
+            
+            Media.AfterNew += Media_AfterNew;
+            Media.AfterMoveToTrash += Media_AfterMoveToTrash;
+            Media.AfterDelete += Media_AfterDelete;
         }
 
-        void content_AfterRefreshContent(Document sender, RefreshContentEventArgs e)
+        private static void Media_AfterDelete(Media sender, DeleteEventArgs e)
+        {
+            MediaCache.Instance.Flush();
+        }
+
+        private static void Media_AfterMoveToTrash(Media sender, MoveToTrashEventArgs e)
+        {
+            MediaCache.Instance.Flush();
+        }
+
+        private static void Media_AfterNew(object sender, NewEventArgs e)
+        {
+            MediaCache.Instance.Flush();
+        }
+
+        private void content_AfterRefreshContent(Document sender, RefreshContentEventArgs e)
         {
             Debug.WriteLine("All Trees flushed! - RefreshContent");   
             Flush();

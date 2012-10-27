@@ -100,5 +100,44 @@ namespace meramedia.Linq.Core
         {
             return DataProvider.FindAll(ids);
         }
+
+        public MediaCache Media
+        {
+            get
+            {
+                return MediaCache.Instance;
+            }
+        }
+
+        public NodeCacheStatistics NodeCacheStatistics
+        {
+            get { return NodeCacheStatistics.Instance; }
+        }
+
+    }
+
+    public sealed class NodeCacheStatistics
+    {
+        private static NodeCacheStatistics _instance;
+
+        public static NodeCacheStatistics Instance
+        {
+            get { return _instance ?? (_instance = new NodeCacheStatistics()); }
+        }
+
+        public int NumItemsInMediaCache()
+        {
+            return MediaCache.Instance.NumItemsInCache();
+        }
+
+        public int NumTreesInNodeCache()
+        {
+            return NodeCache.NumTreesInCache();
+        }
+
+        public int NumNodesInNodeCache()
+        {
+            return NodeCache.NumNodesInCache();
+        }
     }
 }

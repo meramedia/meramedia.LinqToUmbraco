@@ -55,5 +55,10 @@ namespace meramedia.Linq.Core
         {
             return _nodes.SingleOrDefault(x => x.Id == id);
         }
+
+        public int Count
+        {
+            get { return _nodes.Count; }
+        }
     }
 }

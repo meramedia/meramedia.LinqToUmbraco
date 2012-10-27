@@ -1,0 +1,66 @@
+﻿<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<umbPackage>
+
+
+
+  <files>
+    <file>
+      <guid>meramedia.Linq.Core.dll</guid>
+      <orgPath>/bin</orgPath>
+      <orgName>meramedia.Linq.Core.dll</orgName>
+    </file>
+    <file>
+	<guid>ExportCode.ascx</guid>
+	<orgPath>/umbraco/dashboard</orgPath>
+	<orgName>ExportCode.ascx</orgName>
+    </file>
+  </files>
+  <info>
+    <package>
+      <name>meramedia.LinqToUmbraco</name>
+      <version>1.1</version>
+      <license url="http://www.opensource.org/licenses/mit-license.php">MIT license</license>
+      <url>http://www.meramedia.se</url>
+      <requirements>
+        <major>3</major>
+        <minor>0</minor>
+        <patch>0</patch>
+      </requirements>
+    </package>
+    <author>
+      <name>Henri Toivonen</name>
+      <website>henri@meramedia.se</website>
+    </author>
+    <readme><![CDATA[A temporary solution for the removal of LinqToUmbraco from core.
+
+This version was built for internal use in our company until a better solution has been built. It is taken from the version that was in the 4.8.0 source and a bit rewritten.
+
+Please note, the namespaces are the same as they were, so if you are to use this version instead of the vanilla one, remove umbraco.Linq.Core.dll first before installing.
+
+Changes so far:
+- Much much faster
+- Path now works
+- Caching of trees and flushing of them on changes]]></readme>
+  </info>
+  <DocumentTypes />
+  <Templates />
+  <Stylesheets />
+  <Macros />
+  <DictionaryItems />
+  <Languages />
+  <DataTypes />
+<Actions>
+<Action runat="install" alias="addDashboardSection" dashboardAlias="LinqToUmbraco">
+<section>
+    <areas>
+	 <area>developer</area>
+    </areas>
+    <tab caption="Linq to Umbraco">
+      <control>
+        /umbraco/dashboard/ExportCode.ascx
+      </control>
+    </tab> 
+</section>
+</Action>
+</Actions>
+</umbPackage>

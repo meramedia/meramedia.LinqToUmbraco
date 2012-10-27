@@ -213,6 +213,7 @@ namespace meramedia.Linq.Core.Node
         {
             CheckDisposed();
             NodeCache.ClearTrees();
+            MediaCache.Instance.Flush();
         }
 
         // clear cache for changed node. The next get will take care of the loading

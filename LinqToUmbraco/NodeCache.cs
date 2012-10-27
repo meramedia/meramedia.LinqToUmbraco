@@ -92,5 +92,14 @@ namespace meramedia.Linq.Core
             }         
         }
 
+        internal static int NumTreesInCache()
+        {
+            return Trees.Count();
+        }
+
+        internal static int NumNodesInCache()
+        {
+            return Trees.Select(x => x.Value).Sum(i => i.Count);
+        }
     }
 }

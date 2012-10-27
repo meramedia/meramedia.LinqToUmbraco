@@ -16,5 +16,7 @@ namespace meramedia.Linq.Core
         /// Reloads the cache for the particular tree
         /// </summary>
         void ReloadCache();
+
+        int Count { get;  }
     }
 }

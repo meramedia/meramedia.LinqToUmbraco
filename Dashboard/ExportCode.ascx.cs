@@ -4,6 +4,7 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using System.Web.UI;
+using meramedia.Linq.Core.Node;
 using umbraco.IO;
 using meramedia.Linq.Core.Dashboard;
 using umbraco.cms.businesslogic;
@@ -16,9 +17,26 @@ namespace meramedia.Linq.Core.Dashboard
 {
     public partial class ExportCode : UserControl
     {
+
         protected void Page_Load(object sender, EventArgs e)
-        {
+        {            
             btnGenerate.Text = umbraco.ui.Text("create");
+            btnFlushCache.Click += btnFlushCache_Click;
+
+            lblNumItemsMediaCache.Text = NodeCacheStatistics.Instance.NumItemsInMediaCache().ToString();
+            lblNumItemsNodeCache.Text = NodeCacheStatistics.Instance.NumNodesInNodeCache().ToString();
+            lblNumTreesNodeCache.Text = NodeCacheStatistics.Instance.NumTreesInNodeCache().ToString();
+
+        }
+
+        void btnFlushCache_Click(object sender, EventArgs e)
+        {
+            var provider = new NodeDataProvider();
+            provider.Flush();
+
+            lblNumItemsMediaCache.Text = NodeCacheStatistics.Instance.NumItemsInMediaCache().ToString();
+            lblNumItemsNodeCache.Text = NodeCacheStatistics.Instance.NumNodesInNodeCache().ToString();
+            lblNumTreesNodeCache.Text = NodeCacheStatistics.Instance.NumTreesInNodeCache().ToString();
         }
 
 
