@@ -6,10 +6,12 @@ using umbraco.cms.businesslogic.media;
 
 namespace meramedia.Linq.Core
 {
+    //TODO: needs some kind of way of flushing old items out, otherwise memory consumption will grow forever
     public class MediaCache
     {
-
         private static Dictionary<int, Media> _cache;
+
+        private const int MAX_NUM_ITEMS = 400;
 
         private static MediaCache _instance;
         public static MediaCache Instance
@@ -29,6 +31,9 @@ namespace meramedia.Linq.Core
             {
                 cached = new Media(id);
                 _cache.Add(cached.Id, cached);
+
+                if (_cache.Count > MAX_NUM_ITEMS)
+                    _cache.Remove(_cache.First().Key);
             }
             return cached;
 
@@ -44,6 +49,9 @@ namespace meramedia.Linq.Core
                 {
                     _cache.Add(m.Id, m);
                     cached.Add(m);
+
+                    if (_cache.Count > MAX_NUM_ITEMS)
+                        _cache.Remove(_cache.First().Key);
                 }                    
             }
             return cached;

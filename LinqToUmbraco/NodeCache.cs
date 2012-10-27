@@ -13,6 +13,7 @@ namespace meramedia.Linq.Core
     /// <summary>
     /// Class for handling the caching of the nodetrees
     /// </summary>
+    /// //TODO: needs some kind of way of flushing old items out, otherwise memory consumption will grow forever
     internal static class NodeCache
     {
         private static readonly Dictionary<UmbracoInfoAttribute, IContentTree> Trees = new Dictionary<UmbracoInfoAttribute, IContentTree>();
