@@ -54,6 +54,15 @@ namespace meramedia.Linq.Core
             {
                 var docType = changedNode.ContentType.Alias;
                 var key = new UmbracoInfoAttribute(docType);
+
+                // You could check if the node is even cached like this, but then you have to manage inserting of new nodes into cache somehow
+                //if (Trees.ContainsKey(key))
+                //{
+                //    // If node is cached
+                //    if (((Tree<DocTypeBase>) Trees[key]).SingleOrDefault(x => x.Id == changedNode.Id) != null)
+                //        ClearTree(key);
+                //}  
+
                 ClearTree(key);
             }
         }

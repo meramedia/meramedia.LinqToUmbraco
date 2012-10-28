@@ -38,10 +38,8 @@ namespace meramedia.Linq.Core.Dashboard
                 sb.Append(string.Format(TemplateConstants.CLASS_TEMPLATE,
                     dt.Alias,
                     className,
-                    String.Empty, // fixme
                     GenerateProperties(dt),
                     GenerateChildRelationships(dt),
-                    String.Empty, // fixme
                     FormatForComment(dt.Description),
                     baseType
                     )
@@ -157,7 +155,14 @@ namespace meramedia.Linq.Core.Dashboard
             StringBuilder sb = new StringBuilder();
 
             foreach (string className in DocTypes.Select(dt => GenerateTypeName(dt.Alias)))
-                sb.Append(string.Format(TemplateConstants.TREE_TEMPLATE, className));
+            {
+                string pluralizedName = className;
+                if (!className.EndsWith("s"))
+                    pluralizedName = className + "s";
+
+                sb.Append(string.Format(TemplateConstants.TREE_TEMPLATE, className, pluralizedName));
+            }
+                
 
             return sb.ToString();
         }

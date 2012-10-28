@@ -4,6 +4,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "meramedia.Linq.Core", "Linq
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dashboard", "Dashboard\Dashboard.csproj", "{EC2EF7FC-4AB6-44D6-95DB-BE6400DD311D}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{3948D9CF-185F-4DD5-822A-35849413FD24}"
+EndProject
 Global
 	GlobalSection(TestCaseManagementSettings) = postSolution
 		CategoryFile = umbraco2.vsmdi

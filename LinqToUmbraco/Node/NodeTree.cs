@@ -51,14 +51,14 @@ namespace meramedia.Linq.Core.Node
             if (_nodes == null)
             {
                 _nodes = new List<TDocTypeBase>();
-                var rawNodes = _provider.Xml.Descendants().Where(x => ReflectionAssistance.CompareByAlias(typeof(TDocTypeBase), x));
+                var xmlNodes = _provider.Xml.Where(x => ReflectionAssistance.CompareByAlias(typeof(TDocTypeBase), x));
 
                 lock (_lockObject)
                 {
-                    foreach (XElement n in rawNodes)
+                    foreach (XElement node in xmlNodes)
                     {
-                        var dt = new TDocTypeBase();
-                        _provider.LoadFromXml(n, dt);
+                        TDocTypeBase dt = new TDocTypeBase();
+                        _provider.LoadFromXml(node, dt);
 
                         dt.Provider = _provider;
 

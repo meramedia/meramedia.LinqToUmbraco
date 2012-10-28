@@ -34,23 +34,21 @@ namespace meramedia.Linq.Core.Node
 
 
 
-        internal XDocument Xml
+        internal IEnumerable<XElement> Xml
         {
             get
             {
-                    var doc = UmbracoContext.Current.Server.ContentXml;
-                    if (doc == null)
-                    {
-                        Debug.WriteLine("ALERT! Manually loading xml for linqtoumbraco");
-                        return XDocument.Load(XmlPath);
-                    }
-                    else
-                    {
-                        Debug.WriteLine("Xml fetched for LinqToUmbraco");
-                        return doc;
-                    }                    
-                    
-
+                var doc = UmbracoContext.Current.Server.ContentXml;
+                if (doc == null)
+                {
+                    Debug.WriteLine("ALERT! Manually loading xml for linqtoumbraco");
+                    return XDocument.Load(XmlPath).Descendants();
+                }
+                else
+                {
+                    Debug.WriteLine("Xml fetched for LinqToUmbraco");
+                    return doc.Descendants();
+                }                    
             }
         }
 
@@ -86,7 +84,7 @@ namespace meramedia.Linq.Core.Node
 
         internal void SetupNodeTree<TDocType>(UmbracoInfoAttribute attr) where TDocType : DocTypeBase, new()
         {
-            var tree = new NodeTree<TDocType>(this);            
+            var tree = new NodeTree<TDocType>(this);
             NodeCache.AddToCache(attr, tree);
         }
 
@@ -103,7 +101,7 @@ namespace meramedia.Linq.Core.Node
         {
             CheckDisposed();
 
-            var parentXml = Xml.Descendants().SingleOrDefault(d => d.Attribute("isDoc") != null && (int)d.Attribute("id") == id);
+            var parentXml = Xml.SingleOrDefault(d => d.Attribute("isDoc") != null && (int)d.Attribute("id") == id);
 
             if (!ReflectionAssistance.CompareByAlias(typeof(TDocType), parentXml))
                 if (parentXml != null)
@@ -158,7 +156,7 @@ namespace meramedia.Linq.Core.Node
         {
             CheckDisposed();
 
-            var startElement = Xml.Descendants().Single(x => x.Attribute("isDoc") != null && (int)x.Attribute("id") == startNodeId);
+            var startElement = Xml.Single(x => x.Attribute("isDoc") != null && (int)x.Attribute("id") == startNodeId);
             var ancestorElements = startElement.Ancestors();
 
             IEnumerable<DocTypeBase> ancestors = DynamicNodeCreation(ancestorElements);
@@ -345,7 +343,7 @@ namespace meramedia.Linq.Core.Node
             else            
             {
                 Debug.WriteLine("Node not found in cache, trying xml..");
-                var xmlNode = Xml.Descendants().SingleOrDefault(d => d.Attribute("isDoc") != null && (int)d.Attribute("id") == id);
+                var xmlNode = Xml.SingleOrDefault(d => d.Attribute("isDoc") != null && (int)d.Attribute("id") == id);
                 return SetValuesFromXml<T>(xmlNode);
             }            
         }
@@ -375,7 +373,7 @@ namespace meramedia.Linq.Core.Node
                 foreach (int id in ids)
                 {
                     Debug.WriteLine("Node not found in cache, trying xml..");
-                    var xmlNode = Xml.Descendants().SingleOrDefault(d => d.Attribute("isDoc") != null && (int)d.Attribute("id") == id);
+                    var xmlNode = Xml.SingleOrDefault(d => d.Attribute("isDoc") != null && (int)d.Attribute("id") == id);
                     yield return SetValuesFromXml<T>(xmlNode);
                 }
             }  

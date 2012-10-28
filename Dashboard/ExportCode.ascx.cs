@@ -4,8 +4,8 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using System.Web.UI;
+using Umbraco.Core.IO;
 using meramedia.Linq.Core.Node;
-using umbraco.IO;
 using meramedia.Linq.Core.Dashboard;
 using umbraco.cms.businesslogic;
 using umbraco.cms.businesslogic.datatype;
@@ -17,6 +17,8 @@ namespace meramedia.Linq.Core.Dashboard
 {
     public partial class ExportCode : UserControl
     {
+        private static string _namespace;
+        private static string _contextName;
 
         protected void Page_Load(object sender, EventArgs e)
         {            
@@ -26,6 +28,14 @@ namespace meramedia.Linq.Core.Dashboard
             lblNumItemsMediaCache.Text = NodeCacheStatistics.Instance.NumItemsInMediaCache().ToString();
             lblNumItemsNodeCache.Text = NodeCacheStatistics.Instance.NumNodesInNodeCache().ToString();
             lblNumTreesNodeCache.Text = NodeCacheStatistics.Instance.NumTreesInNodeCache().ToString();
+
+            if (!IsPostBack)
+            {
+                if (!String.IsNullOrEmpty(_namespace))
+                    txtNamespace.Text = _namespace;
+                if (!String.IsNullOrEmpty(_contextName))
+                    txtDataContextName.Text = _contextName;
+            }
 
         }
 
@@ -42,7 +52,10 @@ namespace meramedia.Linq.Core.Dashboard
 
         protected void btnGenerate_Click(object sender, EventArgs e)
         {
-            var codeGen = new CodeGenerator();
+            _namespace = txtNamespace.Text;
+            _contextName = txtDataContextName.Text;
+
+            var codeGen = new CodeGenerator();            
 
             var generatedClasses = string.Format(TemplateConstants.POCO_TEMPLATE,
                 txtNamespace.Text,

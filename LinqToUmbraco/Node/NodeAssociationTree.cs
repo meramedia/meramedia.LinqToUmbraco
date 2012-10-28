@@ -55,7 +55,6 @@ namespace meramedia.Linq.Core.Node
                 {
                     var parents = provider
                         .Xml
-                        .Descendants()
                         .Where(x => x.Attribute("id") != null && (int) x.Attribute("id") == ParentNodeId);
                     var rawNodes = parents
                         .Single()
