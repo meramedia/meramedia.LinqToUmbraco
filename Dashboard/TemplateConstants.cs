@@ -10,8 +10,7 @@ namespace meramedia.Linq.Core.Dashboard
         internal const string EXPORT_FOLDER = "/exported-doctypes/";
 
         internal const string POCO_TEMPLATE = 
-            @"
-using System;
+@"using System;
 using System.Linq;
 using System.Collections.Generic;
 using meramedia.Linq.Core;
@@ -33,14 +32,14 @@ namespace {0}
 }}";
 
         internal readonly static string TREE_TEMPLATE = 
-        @"
-public Tree<{0}> {1}
-{{
-	get
-	{{
-		return LoadTree<{0}>();
-	}}
-}}";
+@"
+        public Tree<{0}> {1}
+        {{
+	        get
+	        {{
+		        return LoadTree<{0}>();
+	        }}
+        }}";
 
 
         //0 - Alias
@@ -51,52 +50,52 @@ public Tree<{0}> {1}
         //5 - interface explicit implementation
         //6 - description
         internal readonly static string CLASS_TEMPLATE = 
-        @"
-/// <summary>
-/// {4}
-/// </summary>
-[UmbracoInfo(""{0}"")]
-[System.Runtime.Serialization.DataContractAttribute()]
-[DocType()]
-public partial class {1} : {5} 
-{{
-	public {1}() {{
-	}}
-	{2}
-	{3}
+@"
+        /// <summary>
+        /// {4}
+        /// </summary>
+        [UmbracoInfo(""{0}"")]
+        [System.Runtime.Serialization.DataContractAttribute()]
+        [DocType()]
+        public partial class {1} : {5} 
+        {{
+	        public {1}() {{
+	        }}
+	        {2}
+	        {3}
 
-}}";
+        }}";
 
         internal readonly static string PROPERTIES_TEMPLATE = 
 @"
-private {0} _{1};
-/// <summary>
-/// {2}
-/// </summary>
-[UmbracoInfo(""{3}"", DisplayName = ""{4}"", Mandatory = {5})]
-[Property()]
-[System.Runtime.Serialization.DataMemberAttribute()]
-public virtual {0} {1}
-{{ get; set;}}";
+        private {0} _{1};
+        /// <summary>
+        /// {2}
+        /// </summary>
+        [UmbracoInfo(""{3}"", DisplayName = ""{4}"", Mandatory = {5})]
+        [Property()]
+        [System.Runtime.Serialization.DataMemberAttribute()]
+        public virtual {0} {1}
+        {{ get; set;}}";
 
         internal readonly static string CHILD_RELATIONS_TEMPLATE = 
-        @"
-private AssociationTree<{0}> _{0}s;
-public AssociationTree<{0}> {0}s
-{{
-	get
-	{{
-		if ((_{0}s == null))
-		{{
-			_{0}s = ChildrenOfType<{0}>();
-		}}
-		return _{0}s;
-	}}
-	set
-	{{
-		_{0}s = value;
-	}}
-}}";
+@"
+        private AssociationTree<{0}> _{0}s;
+        public AssociationTree<{0}> {0}s
+        {{
+	        get
+	        {{
+		        if ((_{0}s == null))
+		        {{
+			        _{0}s = ChildrenOfType<{0}>();
+		        }}
+		        return _{0}s;
+	        }}
+	        set
+	        {{
+		        _{0}s = value;
+	        }}
+        }}";
 
     }
 }

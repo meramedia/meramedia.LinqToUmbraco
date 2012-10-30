@@ -91,12 +91,6 @@ namespace meramedia.Linq.Core
         protected bool Disposed;
 
         /// <summary>
-        /// Gets the name of the provider
-        /// </summary>
-        /// <value>The name of the provider.</value>
-        public abstract string Name { get; }
-
-        /// <summary>
         /// Loads the tree with the relevant DocTypes
         /// </summary>
         /// <typeparam name="TDocType">The type of the DocType to load.</typeparam>

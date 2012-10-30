@@ -33,7 +33,6 @@ namespace meramedia.Linq.Core
         /// <value>The provider.</value>
         protected internal UmbracoDataProvider Provider { get; set; }
 
-
         #region Fields
 
         [Field, UmbracoInfo("id", DisplayName = "Id", Mandatory = true), DataMember(Name = "Id")]
@@ -174,12 +173,11 @@ namespace meramedia.Linq.Core
 
         public virtual string WriterName { get; internal set; }
 
-        protected void ValidateProperty(string regex, string value)
+        public string Url
         {
-            Regex r = new Regex(regex);
-            if (!r.IsMatch(value))
+            get
             {
-                throw new InvalidCastException("Value does not match validation expression from Umbraco");
+                return umbraco.library.NiceUrl(Id);
             }
         }
     }

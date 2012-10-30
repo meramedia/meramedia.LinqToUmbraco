@@ -31,9 +31,6 @@ namespace meramedia.Linq.Core.Node
             }
         }
      
-
-
-
         internal IEnumerable<XElement> Xml
         {
             get
@@ -57,12 +54,6 @@ namespace meramedia.Linq.Core.Node
             if (!File.Exists(XmlPath))
                 throw new FileNotFoundException("The XML used by the provider must exist", XmlPath);        
         }
-
-        /// <summary>
-        /// Gets the name of the provider
-        /// </summary>
-        /// <value>The name of the provider.</value>
-        public override string Name { get { return "NodeDataProvider"; } }
 
         /// <summary>
         /// Loads the tree with the relevant DocTypes from the XML

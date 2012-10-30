@@ -45,5 +45,7 @@ namespace meramedia.Linq.Core
         string WriterName { get; }
 
         string Path { get; }
+
+        string Url { get;  }
     }
 }

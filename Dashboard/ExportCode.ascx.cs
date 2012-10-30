@@ -4,7 +4,6 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using System.Web.UI;
-using Umbraco.Core.IO;
 using meramedia.Linq.Core.Node;
 using meramedia.Linq.Core.Dashboard;
 using umbraco.cms.businesslogic;
@@ -12,6 +11,7 @@ using umbraco.cms.businesslogic.datatype;
 using umbraco.cms.businesslogic.propertytype;
 using umbraco.cms.businesslogic.web;
 using umbraco.cms.helpers;
+using umbraco.IO;
 
 namespace meramedia.Linq.Core.Dashboard
 {
