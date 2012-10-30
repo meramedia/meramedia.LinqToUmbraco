@@ -45,19 +45,38 @@ namespace meramedia.Linq.Core
             return GetEnumerator();
         }
 
+        public IEnumerable<TDocType> FindAll(IEnumerable<int> ids)
+        {            
+            if (ids.Count() > 0)
+                return FindAll(ids.ToArray());
+            else return null;
+        }
+
         public IEnumerable<TDocType> FindAll(int[] ids)
         {
-            return ids.Select(id => _nodes.SingleOrDefault(x => x.Id == id));
+            LoadNodesIfEmpty();
+            if (_nodes != null && ids.Length > 0)
+                return ids.Select(id => _nodes.SingleOrDefault(x => x.Id == id));
+            else return null;
         }
 
         public TDocType Find(int id)
         {
-            return _nodes.SingleOrDefault(x => x.Id == id);
+            LoadNodesIfEmpty();
+            if (_nodes != null && id != 0)
+                return _nodes.SingleOrDefault(x => x.Id == id);
+            else return null;
         }
 
         public int Count
         {
-            get { return _nodes.Count; }
+            get { if (_nodes == null) return 0; else return _nodes.Count; }
+        }
+
+        private void LoadNodesIfEmpty()
+        {
+            if (_nodes == null)
+                _nodes = Provider.LoadTree<TDocType>().ToList();
         }
     }
 
