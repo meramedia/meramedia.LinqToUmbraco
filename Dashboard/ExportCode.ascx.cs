@@ -18,7 +18,6 @@ namespace meramedia.Linq.Core.Dashboard
     public partial class ExportCode : UserControl
     {
         private static string _namespace;
-        private static string _contextName;
 
         protected void Page_Load(object sender, EventArgs e)
         {            
@@ -33,8 +32,7 @@ namespace meramedia.Linq.Core.Dashboard
             {
                 if (!String.IsNullOrEmpty(_namespace))
                     txtNamespace.Text = _namespace;
-                if (!String.IsNullOrEmpty(_contextName))
-                    txtDataContextName.Text = _contextName;
+
             }
 
         }
@@ -53,20 +51,19 @@ namespace meramedia.Linq.Core.Dashboard
         protected void btnGenerate_Click(object sender, EventArgs e)
         {
             _namespace = txtNamespace.Text;
-            _contextName = txtDataContextName.Text;
+
 
             var codeGen = new CodeGenerator();            
 
             var generatedClasses = string.Format(TemplateConstants.POCO_TEMPLATE,
                 txtNamespace.Text,
-                txtDataContextName.Text,
                 codeGen.GenerateDataContextCollections(),
                 codeGen.GenerateClasses()
             );
 
             // As we save in a new folder under Media, we need to ensure it exists
             EnsureExportFolder();
-            string pocoFile = Path.Combine(SystemDirectories.Media + TemplateConstants.EXPORT_FOLDER, txtDataContextName.Text + ".txt");
+            string pocoFile = Path.Combine(SystemDirectories.Media + TemplateConstants.EXPORT_FOLDER, "DataContext.txt");
 
             using (var writer = new StreamWriter(IOHelper.MapPath(pocoFile)))
             {

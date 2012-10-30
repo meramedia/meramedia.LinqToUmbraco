@@ -9,7 +9,7 @@ namespace meramedia.Linq.Core.Dashboard
     {
         internal const string EXPORT_FOLDER = "/exported-doctypes/";
 
-        internal const string POCO_TEMPLATE = 
+        internal const string POCO_TEMPLATE =
 @"using System;
 using System.Linq;
 using System.Collections.Generic;
@@ -17,18 +17,28 @@ using meramedia.Linq.Core;
 
 namespace {0} 
 {{
-	public partial class {1}DataContext : UmbracoDataContext 
+	public partial class DataContext : UmbracoDataContext 
     {{
+        private static readonly Lazy<DataContext> _instance = new Lazy<DataContext>(() => new DataContext());
+        public static DataContext Instance
+        {{
+            get
+            {{
+                return _instance.Value;
+            }}
+            
+        }}
+
 		partial void OnCreated();
-		public {1}DataContext() : base()
+		protected DataContext() : base()
 		{{
 			OnCreated();
 		}}
 
-		{2}
+		{1}
 	}}
 
-	{3}
+	{2}
 }}";
 
         internal readonly static string TREE_TEMPLATE = 
@@ -67,8 +77,7 @@ namespace {0}
         }}";
 
         internal readonly static string PROPERTIES_TEMPLATE = 
-@"
-        private {0} _{1};
+@"        
         /// <summary>
         /// {2}
         /// </summary>

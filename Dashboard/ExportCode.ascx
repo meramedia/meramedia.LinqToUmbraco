@@ -15,12 +15,11 @@
 
 <cc1:Pane ID="pane_contextName" runat="server">
     <div>
-        <em class="label">DataContext Name:</em>
-        <asp:TextBox ID="txtDataContextName" runat="server" Style="width: 180px;" Text="MyUmbraco" />
-    </div>
-    <div>
         <em class="label">Namespace:</em>
         <asp:TextBox ID="txtNamespace" runat="server" Style="width: 180px;" Text="MyUmbraco" />
+
+        <br /><br />
+        The DataContext will have the name <i>DataContext</i>.
     </div>
 </cc1:Pane>
 <asp:Panel ID="pnlButtons" runat="server" Style="margin-top: 10px;">
