@@ -19,7 +19,7 @@ namespace {0}
 {{
 	public partial class DataContext : UmbracoDataContext 
     {{
-        private static readonly Lazy<DataContext> _instance = new Lazy<DataContext>(() => new DataContext());
+        private static readonly Lazy<DataContext> _instance = new Lazy<DataContext>(() => new DataContext(), true);
         public static DataContext Instance
         {{
             get

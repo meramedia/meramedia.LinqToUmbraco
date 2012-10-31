@@ -68,5 +68,13 @@ namespace meramedia.Linq.Core
         /// <value>The actual DocTypeAlias.</value>
         public string Actual { get; set; }
     }
+    [Serializable]
+    public class LinqToUmbracoException : Exception
+    {
+        public LinqToUmbracoException(string message) : base(message)
+        {
+
+        }
+    }
 
 }

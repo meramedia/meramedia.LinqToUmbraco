@@ -199,6 +199,8 @@ namespace meramedia.Linq.Core.Node
         /// <param name="node">The node.</param>
         public void LoadFromXml<T>(XElement xml, T node) where T : DocTypeBase
         {
+            if (node == null) throw new LinqToUmbracoException("Node is null, type: " + typeof(T).Name);
+
             if (!ReflectionAssistance.CompareByAlias(node.GetType(), xml))
             {
                 throw new DocTypeMismatchException(xml.Name.LocalName, ReflectionAssistance.GetUmbracoInfoAttribute(node.GetType()).Alias);

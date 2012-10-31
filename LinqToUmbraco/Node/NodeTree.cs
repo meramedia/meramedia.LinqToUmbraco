@@ -51,7 +51,9 @@ namespace meramedia.Linq.Core.Node
             if (_nodes == null)
             {
                 _nodes = new List<TDocTypeBase>();
+
                 var xmlNodes = _provider.Xml.Where(x => ReflectionAssistance.CompareByAlias(typeof(TDocTypeBase), x));
+                if (xmlNodes == null) throw new LinqToUmbracoException("xmlNodes is null in tree: " + typeof(TDocTypeBase).Name);
 
                 lock (_lockObject)
                 {
