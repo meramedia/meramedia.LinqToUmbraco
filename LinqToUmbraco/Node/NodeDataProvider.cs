@@ -11,6 +11,7 @@ using umbraco.presentation;
 using umbraco.cms.helpers;
 using umbraco.BusinessLogic.Utils;
 
+
 namespace meramedia.Linq.Core.Node
 {
     /// <summary>
@@ -186,9 +187,18 @@ namespace meramedia.Linq.Core.Node
         }
 
         // clear cache for changed node. The next get will take care of the loading
-        public override void NodeChanged(Content node)
+        public override void NodeChanged(Content node, bool withChildren = false)
         {
-            NodeCache.ClearTreeForNode(node);            
+            NodeCache.ClearTreeForNode(node);
+            if (withChildren && node.HasChildren)
+            {
+                var children = node.Children;
+                foreach (var child in children)
+                {
+                    NodeCache.ClearTreeForNode(new umbraco.NodeFactory.Node(child.Id));
+                }
+            }
+            
         }
 
         /// <summary>
@@ -233,7 +243,8 @@ namespace meramedia.Linq.Core.Node
                     }
                 }
 
-                if (p.PropertyType.IsValueType && p.PropertyType.GetGenericArguments().Length > 0 && typeof(Nullable<>).IsAssignableFrom(p.PropertyType.GetGenericTypeDefinition()))
+                if (p.PropertyType.IsValueType && p.PropertyType.GetGenericArguments().Length > 0 && 
+                        typeof(Nullable<>).IsAssignableFrom(p.PropertyType.GetGenericTypeDefinition()))
                 {
                     if (string.IsNullOrEmpty(data))
                     {
@@ -247,6 +258,7 @@ namespace meramedia.Linq.Core.Node
                             throw new FormatException(
                                 string.Format("Unable to cast '{0}' to the appropriate type ({1}) for node `{2}`. The alias of the property being parsed is {3}. Refer to inner exception for more details", data, p.PropertyType.FullName, node.Id, attr.Alias), ex);
                         }
+
                     }
                     else
                     {
@@ -260,6 +272,10 @@ namespace meramedia.Linq.Core.Node
                             throw new FormatException(
                                 string.Format("Unable to cast '{0}' to the appropriate type ({1}) for node `{2}`. The alias of the property being parsed is {3}. Refer to inner exception for more details", data, p.PropertyType.FullName, node.Id, attr.Alias), ex);
                         }
+                        catch (InvalidCastException)
+                        {
+                            throw new LinqToUmbracoException(string.Format("Unable to cast '{0}' to the appropriate type ({1}) for node `{2}`. The alias of the property being parsed is {3}. Refer to inner exception for more details", data, p.PropertyType.FullName, node.Id, attr.Alias));
+                        }
                     }
                 }
                 else
@@ -267,12 +283,17 @@ namespace meramedia.Linq.Core.Node
                     // TODO: Address how Convert.ChangeType works in globalisation
                     try
                     {
+                        // FIXME: if true/false is mandatory this will fail
                         p.SetValue(node, Convert.ChangeType(data, p.PropertyType), null);
                     }
                     catch (FormatException ex)
                     {
                         throw new FormatException(
                             string.Format("Unable to cast '{0}' to the appropriate type ({1}) for node `{2}`. The alias of the property being parsed is {3}. Refer to inner exception for more details", data, p.PropertyType.FullName, node.Id, attr.Alias), ex);
+                    }
+                    catch (InvalidCastException)
+                    {
+                        throw new LinqToUmbracoException(string.Format("Unable to cast '{0}' to the appropriate type ({1}) for node `{2}`. The alias of the property being parsed is {3}. Refer to inner exception for more details", data, p.PropertyType.FullName, node.Id, attr.Alias));
                     }
                 }
             }

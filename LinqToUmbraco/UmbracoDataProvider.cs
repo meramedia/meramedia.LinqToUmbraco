@@ -83,7 +83,7 @@ namespace meramedia.Linq.Core
         }
 
         public abstract void Flush();
-        public abstract void NodeChanged(Content node);
+        public abstract void NodeChanged(Content node, bool withChildren = false);
 
         /// <summary>
         /// Indicates the disposal status of the current provider
@@ -167,7 +167,7 @@ namespace meramedia.Linq.Core
             if (action == ActionSort.Instance)
             {
                 Debug.WriteLine("Nodetree flushed! - Sort");
-                NodeChanged(sender);
+                NodeChanged(sender, true);
             }
                 
 

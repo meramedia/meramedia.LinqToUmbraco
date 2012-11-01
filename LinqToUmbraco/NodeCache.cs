@@ -7,6 +7,7 @@ using meramedia.Linq.Core;
 using meramedia.Linq.Core.Node;
 using umbraco.cms.businesslogic;
 using umbraco.cms.businesslogic.web;
+using umbraco.NodeFactory;
 
 namespace meramedia.Linq.Core
 {
@@ -62,6 +63,17 @@ namespace meramedia.Linq.Core
                 //    if (((Tree<DocTypeBase>) Trees[key]).SingleOrDefault(x => x.Id == changedNode.Id) != null)
                 //        ClearTree(key);
                 //}  
+
+                ClearTree(key);
+            }
+        }
+
+        internal static void ClearTreeForNode(umbraco.NodeFactory.Node changedNode)
+        {
+            lock (CacheLock)
+            {
+                var docType = changedNode.NodeTypeAlias;
+                var key = new UmbracoInfoAttribute(docType);
 
                 ClearTree(key);
             }
