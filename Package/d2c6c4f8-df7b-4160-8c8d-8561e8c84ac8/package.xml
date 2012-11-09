@@ -9,6 +9,11 @@
       <orgPath>/bin</orgPath>
       <orgName>meramedia.Linq.Core.dll</orgName>
     </file>
+	<file>
+	  <guid>LinqToUmbracoDashboard.dll</guid>
+      <orgPath>/bin</orgPath>
+      <orgName>LinqToUmbracoDashboard.dll</orgName>
+	</file>
     <file>
 	<guid>ExportCode.ascx</guid>
 	<orgPath>/umbraco/dashboard</orgPath>
@@ -18,7 +23,7 @@
   <info>
     <package>
       <name>meramedia.LinqToUmbraco</name>
-      <version>1.1</version>
+      <version>2.0</version>
       <license url="http://www.opensource.org/licenses/mit-license.php">MIT license</license>
       <url>http://www.meramedia.se</url>
       <requirements>
@@ -31,16 +36,11 @@
       <name>Henri Toivonen</name>
       <website>henri@meramedia.se</website>
     </author>
-    <readme><![CDATA[A temporary solution for the removal of LinqToUmbraco from core.
+    <readme><![CDATA[Do you want to use static typing with your Umbraco? Do you want to keep on using the awesome workflow that was LinqToUmbraco? Then this is the project for you.
 
-This version was built for internal use in our company until a better solution has been built. It is taken from the version that was in the 4.8.0 source and a bit rewritten.
+It started out as a way to continue to use LinqToUmbraco after its removal from the core, so in essence it is still that. However, large chunks have been since rewritten.
 
-Please note, the namespaces are the same as they were, so if you are to use this version instead of the vanilla one, remove umbraco.Linq.Core.dll first before installing.
-
-Changes so far:
-- Much much faster
-- Path now works
-- Caching of trees and flushing of them on changes]]></readme>
+Note: if you are using an umbraco version before the removal, remember to delete umbraco.Linq.Core.dll first.]]></readme>
   </info>
   <DocumentTypes />
   <Templates />
