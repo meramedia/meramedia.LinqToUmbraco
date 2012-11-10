@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Text.RegularExpressions;
 using umbraco.BusinessLogic;
 using umbraco.cms.businesslogic;
 using umbraco.cms.businesslogic.datatype;
@@ -13,6 +14,9 @@ namespace meramedia.Linq.Core.Dashboard
 {
     internal class CodeGenerator
     {
+        // maybe it should be possible to change the generated basetype
+        private const string BaseType = "DocTypeBase";
+
         private readonly Dictionary<Guid, Type> _dataTypeMapping = new Dictionary<Guid, Type>();
         private List<DocumentType> _docTypes;
         public List<DocumentType> DocTypes
@@ -28,22 +32,21 @@ namespace meramedia.Linq.Core.Dashboard
             {
                 string className = GenerateTypeName(dt.Alias);
 
-                var baseType = "DocTypeBase";
+                var inheritFrom = BaseType;
                 if (dt.MasterContentType > 0)
                 {
                     var parent = DocTypes.First(d => d.Id == dt.MasterContentType);
-                    baseType = GenerateTypeName(parent.Alias);
+                    inheritFrom = GenerateTypeName(parent.Alias);
                 }
 
                 sb.Append(string.Format(TemplateConstants.CLASS_TEMPLATE,
-                    dt.Alias,
-                    className,
-                    GenerateProperties(dt),
-                    GenerateChildRelationships(dt),
-                    FormatForComment(dt.Description),
-                    baseType
-                    )
-                );
+                        dt.Alias,
+                        className,
+                        GenerateProperties(dt),
+                        GenerateChildRelationships(dt),
+                        FormatForComment(dt.Description),
+                        inheritFrom
+                ));
             }
 
             return sb.ToString();
@@ -68,9 +71,9 @@ namespace meramedia.Linq.Core.Dashboard
             var sb = new StringBuilder();
 
             foreach (var pt in
-                dt.getVirtualTabs.Where(x => x.ContentType == dt.Id).SelectMany(x => x.GetPropertyTypes(dt.Id))
-                .Concat(dt.PropertyTypes.Where(x => x.ContentTypeId == dt.Id && x.TabId == 0))
-                )
+                        dt.getVirtualTabs.Where(x => x.ContentType == dt.Id).SelectMany(x => x.GetPropertyTypes(dt.Id))
+                        .Concat(dt.PropertyTypes.Where(x => x.ContentTypeId == dt.Id && x.TabId == 0))
+                    )
             {
                 sb.Append(string.Format(TemplateConstants.PROPERTIES_TEMPLATE,
                     GetDotNetType(pt),
@@ -169,8 +172,22 @@ namespace meramedia.Linq.Core.Dashboard
 
         internal static string GenerateTypeName(string alias)
         {
-            string s = Casing.SafeAlias(alias);
-            return s[0].ToString().ToUpper() + s.Substring(1, s.Length - 1);
+            List<string> previousTypesNames = new List<string>();
+            string typeName = Casing.SafeAlias(alias);
+
+            // shouldnt safealias actually give us a safe alias?
+            Regex regex = new Regex("[-_.,:;´'!#¤%&()=½€$£@§]");
+
+            typeName = regex.Replace(typeName, "");
+            typeName = typeName[0].ToString().ToUpper() + typeName.Substring(1, typeName.Length - 1);
+
+            // in case we removed a character that was needed for it not to be a duplicate
+            // ugly hack
+            if (previousTypesNames.Contains(typeName))
+                typeName = typeName + "1";
+
+            previousTypesNames.Add(typeName);
+            return typeName;
         }
 
         internal static string FormatForComment(string s)

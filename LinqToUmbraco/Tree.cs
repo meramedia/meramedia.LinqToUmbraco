@@ -19,7 +19,7 @@ namespace meramedia.Linq.Core
     public abstract class Tree<TDocType> : IContentTree, IEnumerable<TDocType>
         where TDocType : DocTypeBase, new()
     {
-        protected List<TDocType> _nodes;
+        protected List<TDocType> Nodes;
 
         /// <summary>
         /// Gets the <see cref="umbracoDataProvider"/> Provider associated with this instance
@@ -46,37 +46,36 @@ namespace meramedia.Linq.Core
         }
 
         public IEnumerable<TDocType> FindAll(IEnumerable<int> ids)
-        {            
-            if (ids.Count() > 0)
-                return FindAll(ids.ToArray());
-            else return null;
+        {
+            IEnumerable<int> enumerable = ids as List<int> ?? ids.ToList();
+            return enumerable.Any() ? FindAll(enumerable.ToArray()) : null;
         }
 
         public IEnumerable<TDocType> FindAll(int[] ids)
         {
             LoadNodesIfEmpty();
-            if (_nodes != null && ids.Length > 0)
-                return ids.Select(id => _nodes.SingleOrDefault(x => x.Id == id));
+            if (Nodes != null && ids.Length > 0)
+                return ids.Select(id => Nodes.SingleOrDefault(x => x.Id == id));
             else return null;
         }
 
         public TDocType Find(int id)
         {
             LoadNodesIfEmpty();
-            if (_nodes != null && id != 0)
-                return _nodes.SingleOrDefault(x => x.Id == id);
+            if (Nodes != null && id != 0)
+                return Nodes.SingleOrDefault(x => x.Id == id);
             else return null;
         }
 
         public int Count
         {
-            get { if (_nodes == null) return 0; else return _nodes.Count; }
+            get { if (Nodes == null) return 0; else return Nodes.Count; }
         }
 
         private void LoadNodesIfEmpty()
         {
-            if (_nodes == null)
-                _nodes = Provider.LoadTree<TDocType>().ToList();
+            if (Nodes == null)
+                Nodes = Provider.LoadTree<TDocType>().ToList();
         }
     }
 

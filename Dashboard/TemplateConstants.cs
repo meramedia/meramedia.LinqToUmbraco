@@ -17,7 +17,7 @@ using meramedia.Linq.Core;
 
 namespace {0} 
 {{
-	public partial class DataContext : UmbracoDataContext 
+    public partial class DataContext : UmbracoDataContext 
     {{
         private static readonly Lazy<DataContext> _instance = new Lazy<DataContext>(() => new DataContext(), true);
         public static DataContext Instance
@@ -26,7 +26,7 @@ namespace {0}
             {{
                 return _instance.Value;
             }}
-            
+
         }}
 
 		partial void OnCreated();
@@ -41,7 +41,7 @@ namespace {0}
 	{2}
 }}";
 
-        internal readonly static string TREE_TEMPLATE = 
+        internal const string TREE_TEMPLATE = 
 @"
         public Tree<{0}> {1}
         {{
@@ -59,7 +59,7 @@ namespace {0}
         //4 - child relationships
         //5 - interface explicit implementation
         //6 - description
-        internal readonly static string CLASS_TEMPLATE = 
+        internal const string CLASS_TEMPLATE = 
 @"
         /// <summary>
         /// {4}
@@ -69,14 +69,14 @@ namespace {0}
         [DocType()]
         public partial class {1} : {5} 
         {{
-	        public {1}() {{
-	        }}
 	        {2}
 	        {3}
 
-        }}";
+        }}"
 
-        internal readonly static string PROPERTIES_TEMPLATE = 
+;
+
+        internal const string PROPERTIES_TEMPLATE = 
 @"        
         /// <summary>
         /// {2}
@@ -87,7 +87,7 @@ namespace {0}
         public virtual {0} {1}
         {{ get; set;}}";
 
-        internal readonly static string CHILD_RELATIONS_TEMPLATE = 
+        internal const string CHILD_RELATIONS_TEMPLATE = 
 @"
         private AssociationTree<{0}> _{0}s;
         public AssociationTree<{0}> {0}s

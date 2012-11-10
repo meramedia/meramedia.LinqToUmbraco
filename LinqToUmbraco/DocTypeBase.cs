@@ -22,12 +22,6 @@ namespace meramedia.Linq.Core
         private AssociationTree<DocTypeBase> _children;
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="DocTypeBase"/> class.
-        /// </summary>
-        public DocTypeBase()
-        { }
-
-        /// <summary>
         /// Gets or sets the provider.
         /// </summary>
         /// <value>The provider.</value>

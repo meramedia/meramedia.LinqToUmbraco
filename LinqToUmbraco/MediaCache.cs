@@ -11,7 +11,7 @@ namespace meramedia.Linq.Core
     {
         private static Dictionary<int, Media> _cache;
 
-        private const int MAX_NUM_ITEMS = 400;
+        private const int MaxNumItems = 400;
 
         private static readonly object CacheLock = new object();
 
@@ -36,7 +36,7 @@ namespace meramedia.Linq.Core
                 {
                     _cache.Add(cached.Id, cached);
 
-                    if (_cache.Count > MAX_NUM_ITEMS)
+                    if (_cache.Count > MaxNumItems)
                         _cache.Remove(_cache.First().Key);
                 }
             }
@@ -56,7 +56,7 @@ namespace meramedia.Linq.Core
                     {
                         _cache.Add(m.Id, m);                        
 
-                        if (_cache.Count > MAX_NUM_ITEMS)
+                        if (_cache.Count > MaxNumItems)
                             _cache.Remove(_cache.First().Key);
                     }
                     cached.Add(m);

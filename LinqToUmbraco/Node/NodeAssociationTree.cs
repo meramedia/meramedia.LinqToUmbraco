@@ -15,7 +15,7 @@ namespace meramedia.Linq.Core.Node
         internal NodeAssociationTree(IEnumerable<TDocTypeBase> nodes)
         {
             //_nodes = new List<TDocTypeBase>();
-            _nodes = nodes.ToList();
+            Nodes = nodes.ToList();
         }
 
         /// <summary>
@@ -35,11 +35,11 @@ namespace meramedia.Linq.Core.Node
         /// <returns></returns>
         public override IEnumerator<TDocTypeBase> GetEnumerator()
         {
-            if (_nodes == null) //first access, otherwise it'd be cached
+            if (Nodes == null) //first access, otherwise it'd be cached
             {
                 LoadNodes();
             }
-            if (_nodes != null) return _nodes.GetEnumerator();
+            if (Nodes != null) return Nodes.GetEnumerator();
             else throw new InvalidOperationException("No nodes!");
         }
 
@@ -60,7 +60,7 @@ namespace meramedia.Linq.Core.Node
                         .Single()
                         .Elements()
                         .Where(x => x.Attribute("isDoc") != null);
-                    _nodes = provider.DynamicNodeCreation(rawNodes).Cast<TDocTypeBase>().ToList(); //drop is back to the type which was asked for 
+                    Nodes = provider.DynamicNodeCreation(rawNodes).Cast<TDocTypeBase>().ToList(); //drop is back to the type which was asked for 
                 }
             }
         }

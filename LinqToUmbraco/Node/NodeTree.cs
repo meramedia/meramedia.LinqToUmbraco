@@ -48,12 +48,11 @@ namespace meramedia.Linq.Core.Node
         /// <returns></returns>
         public override IEnumerator<TDocTypeBase> GetEnumerator()
         {
-            if (_nodes == null)
+            if (Nodes == null)
             {
-                _nodes = new List<TDocTypeBase>();
+                Nodes = new List<TDocTypeBase>();
 
                 var xmlNodes = _provider.Xml.Where(x => ReflectionAssistance.CompareByAlias(typeof(TDocTypeBase), x));
-                if (xmlNodes == null) throw new LinqToUmbracoException("xmlNodes is null in tree: " + typeof(TDocTypeBase).Name);
 
                 lock (_lockObject)
                 {
@@ -64,11 +63,11 @@ namespace meramedia.Linq.Core.Node
 
                         dt.Provider = _provider;
 
-                        _nodes.Add(dt);
+                        Nodes.Add(dt);
                     }
                 }
             }
-            return _nodes.GetEnumerator();
+            return Nodes.GetEnumerator();
         }
 
         /// <summary>

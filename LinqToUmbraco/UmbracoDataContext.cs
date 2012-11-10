@@ -16,12 +16,6 @@ namespace meramedia.Linq.Core
             get { return _dataProvider.Value; }
         }
 
-        /// <summary>
-        /// Useless ctors needed because of generated DataContext file created by umbraco.
-        /// </summary>
-        protected UmbracoDataContext()
-        { }
-
 
         /// <summary>
         /// Loads the tree of umbraco items.
