@@ -71,7 +71,7 @@ namespace meramedia.Linq.Core.Dashboard
             var sb = new StringBuilder();
 
             foreach (var pt in
-                        dt.getVirtualTabs.Where(x => x.ContentType == dt.Id).SelectMany(x => x.GetPropertyTypes(dt.Id))
+                        dt.getVirtualTabs.SelectMany(x => x.GetPropertyTypes(dt.Id).Where(y => y.ContentTypeId == dt.Id))
                         .Concat(dt.PropertyTypes.Where(x => x.ContentTypeId == dt.Id && x.TabId == 0))
                     )
             {
