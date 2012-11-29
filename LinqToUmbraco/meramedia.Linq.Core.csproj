@@ -66,16 +66,13 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="businesslogic">
-      <HintPath>..\bin\businesslogic.dll</HintPath>
+      <HintPath>..\umbracoBin\businesslogic.dll</HintPath>
     </Reference>
     <Reference Include="cms">
-      <HintPath>..\bin\cms.dll</HintPath>
-    </Reference>
-    <Reference Include="controls">
-      <HintPath>..\bin\controls.dll</HintPath>
+      <HintPath>..\umbracoBin\cms.dll</HintPath>
     </Reference>
     <Reference Include="interfaces">
-      <HintPath>..\bin\interfaces.dll</HintPath>
+      <HintPath>..\umbracoBin\interfaces.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core">
@@ -99,13 +96,7 @@
       <RequiredTargetFramework>3.5</RequiredTargetFramework>
     </Reference>
     <Reference Include="umbraco">
-      <HintPath>..\bin\umbraco.dll</HintPath>
-    </Reference>
-    <Reference Include="umbraco.DataLayer">
-      <HintPath>..\bin\umbraco.DataLayer.dll</HintPath>
-    </Reference>
-    <Reference Include="umbraco.providers">
-      <HintPath>..\bin\umbraco.providers.dll</HintPath>
+      <HintPath>..\umbracoBin\umbraco.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>
