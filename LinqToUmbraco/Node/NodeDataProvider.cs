@@ -10,6 +10,7 @@ using umbraco.cms.businesslogic.web;
 using umbraco.presentation;
 using umbraco.cms.helpers;
 using umbraco.BusinessLogic.Utils;
+using System.Xml;
 
 
 namespace meramedia.Linq.Core.Node
@@ -31,21 +32,26 @@ namespace meramedia.Linq.Core.Node
                 return UmbracoContext.Current.Server.MapPath(UmbracoContext.Current.Server.ContentXmlPath);
             }
         }
-     
+
+        private IEnumerable<XElement> _xml;     
         internal IEnumerable<XElement> Xml
         {
             get
             {
-                var doc = UmbracoContext.Current.Server.ContentXml;
+                if (_xml != null) return _xml;
+
+                var doc = UmbracoContext.Current.GetXml();
                 if (doc == null)
                 {
                     Debug.WriteLine("ALERT! Manually loading xml for linqtoumbraco");
-                    return XDocument.Load(XmlPath).Descendants();
+                    _xml = XDocument.Load(XmlPath).Descendants();
+                    return _xml;
                 }
                 else
                 {
                     Debug.WriteLine("Xml fetched for LinqToUmbraco");
-                    return doc.Descendants();
+                    _xml = XDocument.Load(new XmlNodeReader(doc)).Descendants();
+                    return _xml;
                 }                    
             }
         }
