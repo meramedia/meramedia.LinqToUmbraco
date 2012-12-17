@@ -32,26 +32,26 @@ namespace meramedia.Linq.Core.Node
                 return UmbracoContext.Current.Server.MapPath(UmbracoContext.Current.Server.ContentXmlPath);
             }
         }
-
-        private IEnumerable<XElement> _xml;     
+        
         internal IEnumerable<XElement> Xml
         {
             get
-            {
-                if (_xml != null) return _xml;
+            {                
+                if (NodeCache.Xml != null)
+                    return NodeCache.Xml;
 
                 var doc = UmbracoContext.Current.GetXml();
                 if (doc == null)
                 {
                     Debug.WriteLine("ALERT! Manually loading xml for linqtoumbraco");
-                    _xml = XDocument.Load(XmlPath).Descendants();
-                    return _xml;
+                    NodeCache.Xml = XDocument.Load(XmlPath).Descendants();
+                    return NodeCache.Xml;
                 }
                 else
                 {
                     Debug.WriteLine("Xml fetched for LinqToUmbraco");
-                    _xml = XDocument.Load(new XmlNodeReader(doc)).Descendants();
-                    return _xml;
+                    NodeCache.Xml = XDocument.Load(new XmlNodeReader(doc)).Descendants();
+                    return NodeCache.Xml;
                 }                    
             }
         }
@@ -186,7 +186,7 @@ namespace meramedia.Linq.Core.Node
         /// Flushes the cache for this provider
         /// </summary>
         public override void Flush()
-        {
+        {         
             CheckDisposed();
             NodeCache.ClearTrees();
             MediaCache.Instance.Flush();

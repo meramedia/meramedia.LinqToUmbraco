@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Text;
+using System.Xml.Linq;
 using meramedia.Linq.Core;
 using meramedia.Linq.Core.Node;
 using umbraco.cms.businesslogic;
@@ -18,6 +19,7 @@ namespace meramedia.Linq.Core
     {
         private static readonly Dictionary<UmbracoInfoAttribute, IContentTree> Trees = new Dictionary<UmbracoInfoAttribute, IContentTree>();
         private static readonly object CacheLock = new object();
+        internal static IEnumerable<XElement> Xml { get; set; }
 
         internal static bool ContainsKey(UmbracoInfoAttribute key)
         {
@@ -45,6 +47,7 @@ namespace meramedia.Linq.Core
             lock (CacheLock)
             {
                 Trees.Clear();
+                Xml = null;
                 Debug.WriteLine("All trees flushed!");
             }
         }
@@ -55,7 +58,7 @@ namespace meramedia.Linq.Core
             {
                 var docType = changedNode.ContentType.Alias;
                 var key = new UmbracoInfoAttribute(docType);
-
+                
                 // You could check if the node is even cached like this, but then you have to manage inserting of new nodes into cache somehow
                 //if (Trees.ContainsKey(key))
                 //{
@@ -73,8 +76,7 @@ namespace meramedia.Linq.Core
             lock (CacheLock)
             {
                 var docType = changedNode.NodeTypeAlias;
-                var key = new UmbracoInfoAttribute(docType);
-
+                var key = new UmbracoInfoAttribute(docType);                
                 ClearTree(key);
             }
         }
@@ -85,6 +87,8 @@ namespace meramedia.Linq.Core
             {
                 if (Trees.ContainsKey(key))
                     Trees.Remove(key);
+
+                Xml = null;
                 Debug.WriteLine(key.DisplayName + " tree flushed!");
             }  
         }
