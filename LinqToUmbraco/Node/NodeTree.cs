@@ -49,21 +49,23 @@ namespace meramedia.Linq.Core.Node
         public override IEnumerator<TDocTypeBase> GetEnumerator()
         {
             if (Nodes == null)
-            {
-                Nodes = new List<TDocTypeBase>();
-
+            {                
                 var xmlNodes = _provider.Xml.Where(x => ReflectionAssistance.CompareByAlias(typeof(TDocTypeBase), x));
 
                 lock (_lockObject)
                 {
-                    foreach (XElement node in xmlNodes)
+                    if (Nodes == null)
                     {
-                        TDocTypeBase dt = new TDocTypeBase();
-                        _provider.LoadFromXml(node, dt);
+                        Nodes = new List<TDocTypeBase>();
+                        foreach (XElement node in xmlNodes)
+                        {
+                            TDocTypeBase dt = new TDocTypeBase();
+                            _provider.LoadFromXml(node, dt);
 
-                        dt.Provider = _provider;
+                            dt.Provider = _provider;
 
-                        Nodes.Add(dt);
+                            Nodes.Add(dt);
+                        }
                     }
                 }
             }

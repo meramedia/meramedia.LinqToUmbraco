@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
@@ -17,7 +18,7 @@ namespace meramedia.Linq.Core
     /// </summary>    
     internal static class NodeCache
     {
-        private static readonly Dictionary<UmbracoInfoAttribute, IContentTree> Trees = new Dictionary<UmbracoInfoAttribute, IContentTree>();
+        private static readonly ConcurrentDictionary<UmbracoInfoAttribute, IContentTree> Trees = new ConcurrentDictionary<UmbracoInfoAttribute, IContentTree>();
         private static readonly object CacheLock = new object();
         internal static IEnumerable<XElement> Xml { get; set; }
 
@@ -28,11 +29,11 @@ namespace meramedia.Linq.Core
 
         internal static void AddToCache(UmbracoInfoAttribute attr, IContentTree tree)
         {
-            if (!Trees.ContainsKey(attr))
+            lock (CacheLock)
             {
-                lock (CacheLock)
-                {
-                    Trees.Add(attr, tree);
+                if (!Trees.ContainsKey(attr))
+                {                    
+                    Trees.TryAdd(attr, tree);
                 }
             }
         }
@@ -86,8 +87,11 @@ namespace meramedia.Linq.Core
             lock (CacheLock)
             {
                 if (Trees.ContainsKey(key))
-                    Trees.Remove(key);
-
+                {
+                    IContentTree temp;
+                    Trees.TryRemove(key, out temp);
+                }
+                    
                 Xml = null;
                 Debug.WriteLine(key.DisplayName + " tree flushed!");
             }  

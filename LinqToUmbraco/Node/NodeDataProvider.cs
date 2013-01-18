@@ -11,6 +11,7 @@ using umbraco.presentation;
 using umbraco.cms.helpers;
 using umbraco.BusinessLogic.Utils;
 using System.Xml;
+using umbraco.cms.businesslogic.cache;
 
 
 namespace meramedia.Linq.Core.Node
@@ -204,6 +205,10 @@ namespace meramedia.Linq.Core.Node
                     NodeCache.ClearTreeForNode(new umbraco.NodeFactory.Node(child.Id));
                 }
             }
+
+            var macros = umbraco.cms.businesslogic.macro.Macro.GetAll();
+            foreach (var m in macros)
+                Cache.ClearCacheItem("UmbracoMacroCache" + m.Alias);
             
         }
 
