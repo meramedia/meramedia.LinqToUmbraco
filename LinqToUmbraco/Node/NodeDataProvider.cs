@@ -26,13 +26,7 @@ namespace meramedia.Linq.Core.Node
     /// </remarks>
     public sealed class NodeDataProvider : UmbracoDataProvider
     {
-        private static string XmlPath
-        {
-            get
-            {
-                return UmbracoContext.Current.Server.MapPath(UmbracoContext.Current.Server.ContentXmlPath);
-            }
-        }
+        private string XmlPath { get; set; }
         
         internal IEnumerable<XElement> Xml
         {
@@ -59,6 +53,16 @@ namespace meramedia.Linq.Core.Node
 
         public NodeDataProvider()
         {
+            XmlPath = UmbracoContext.Current.Server.MapPath(UmbracoContext.Current.Server.ContentXmlPath);
+
+            if (!File.Exists(XmlPath))
+                throw new FileNotFoundException("The XML used by the provider must exist", XmlPath);        
+        }
+
+        public NodeDataProvider(String xmlPath)
+        {
+            XmlPath = UmbracoContext.Current.Server.MapPath(xmlPath);
+
             if (!File.Exists(XmlPath))
                 throw new FileNotFoundException("The XML used by the provider must exist", XmlPath);        
         }

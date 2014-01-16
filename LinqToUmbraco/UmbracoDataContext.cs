@@ -10,10 +10,12 @@ namespace meramedia.Linq.Core
 {
     public abstract class UmbracoDataContext : IDisposable
     {
-        private static readonly Lazy<UmbracoDataProvider> _dataProvider = new Lazy<UmbracoDataProvider>(() => new NodeDataProvider());
+        private Lazy<UmbracoDataProvider> _dataProvider = new Lazy<UmbracoDataProvider>(() => new NodeDataProvider());
+
         public UmbracoDataProvider DataProvider
         {
             get { return _dataProvider.Value; }
+            set { _dataProvider = new Lazy<UmbracoDataProvider>(() => value);  }
         }
 
 
