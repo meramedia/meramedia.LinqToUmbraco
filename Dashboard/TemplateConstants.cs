@@ -24,13 +24,23 @@ namespace {0}
         {{
             get
             {{
-                return _instance.Value;
+                if (UmbracoContext.Current.InPreviewMode)
+                {{
+                    var umbracoUser = UmbracoContext.Current.UmbracoUser;
+                    var previewFileName = umbraco.BusinessLogic.StateHelper.Cookies.Preview.GetValue();
+                    var previewPath = String.Format(""/App_Data/preview/{0}_{1}.config"", umbracoUser.Id, previewFileName);
+                    var nodeDataProvider = new NodeDataProvider(previewPath);
+                    return new DataContext { DataProvider = nodeDataProvider };
+                }}
+                else
+                {{
+                    return _instance.Value;
+                }}
             }}
-
         }}
 
 		partial void OnCreated();
-		protected DataContext() : base()
+		public DataContext() : base()
 		{{
 			OnCreated();
 		}}
