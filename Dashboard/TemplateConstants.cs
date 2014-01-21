@@ -28,9 +28,9 @@ namespace {0}
                 {{
                     var umbracoUser = UmbracoContext.Current.UmbracoUser;
                     var previewFileName = umbraco.BusinessLogic.StateHelper.Cookies.Preview.GetValue();
-                    var previewPath = String.Format(""/App_Data/preview/{0}_{1}.config"", umbracoUser.Id, previewFileName);
+                    var previewPath = String.Format(""/App_Data/preview/{{0}}_{{1}}.config"", umbracoUser.Id, previewFileName);
                     var nodeDataProvider = new NodeDataProvider(previewPath);
-                    return new DataContext { DataProvider = nodeDataProvider };
+                    return new DataContext {{ DataProvider = nodeDataProvider }};
                 }}
                 else
                 {{

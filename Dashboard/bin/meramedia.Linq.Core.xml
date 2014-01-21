@@ -1,0 +1,489 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>meramedia.Linq.Core</name>
+    </assembly>
+    <members>
+        <member name="T:meramedia.Linq.Core.AssociationTree`1">
+            <summary>
+            Represents the child items of TDocTypeBase
+            </summary>
+            <remarks>
+            This is used for creating a DataProvider specific child item collection of a DocType instance.
+            
+            It allows a DocType to have strongly typed child associations, and accessors such as:
+            <example>
+                myDocType.SomeChildTypes
+            </example>
+            </remarks>
+            <typeparam name="TDocTypeBase">The type of the DocTypeBase which this association represents.</typeparam>
+        </member>
+        <member name="T:meramedia.Linq.Core.Tree`1">
+            <summary>
+            Represents a collection within DataProvider of a DocType
+            </summary>
+            <remarks>
+            Similar to the implementation of <see cref="T:System.Data.Linq.Table`1"/>, 
+            providing a single collection which represents all instances of the given type within the DataProvider.
+            
+            Implementers of this type will need to provide a manner of retrieving the TDocType from the DataProvider
+            </remarks>
+            <typeparam name="TDocType">The type of the DocType.</typeparam>
+        </member>
+        <member name="T:meramedia.Linq.Core.IContentTree">
+            <summary>
+            Base of an umbraco content tree
+            </summary>
+        </member>
+        <member name="M:meramedia.Linq.Core.IContentTree.ReloadCache">
+            <summary>
+            Reloads the cache for the particular tree
+            </summary>
+        </member>
+        <member name="P:meramedia.Linq.Core.IContentTree.Provider">
+            <summary>
+            Gets the <see cref="T:meramedia.Linq.Core.UmbracoDataProvider"/> Provider associated with this instance
+            </summary>
+            <value>The provider.</value>
+        </member>
+        <member name="M:meramedia.Linq.Core.Tree`1.ReloadCache">
+            <summary>
+            Manually reload cache
+            </summary>
+        </member>
+        <member name="M:meramedia.Linq.Core.Tree`1.GetEnumerator">
+            <summary>
+            Returns an enumerator that iterates through the collection.
+            </summary>
+            <returns>
+            A <see cref="T:System.Collections.Generic.IEnumerator`1"/> that can be used to iterate through the collection.
+            </returns>
+        </member>
+        <member name="P:meramedia.Linq.Core.Tree`1.Provider">
+            <summary>
+            Gets the <see cref="!:umbracoDataProvider"/> Provider associated with this instance
+            </summary>
+            <value>The provider.</value>
+        </member>
+        <member name="P:meramedia.Linq.Core.AssociationTree`1.ParentNodeId">
+            <summary>
+            Gets or sets the parent node id which this AssociationTree is for
+            </summary>
+            <value>The parent node id.</value>
+        </member>
+        <member name="T:meramedia.Linq.Core.UmbracoInfoAttribute">
+            <summary>
+            Standard umbraco info
+            </summary>
+        </member>
+        <member name="M:meramedia.Linq.Core.UmbracoInfoAttribute.#ctor(System.String)">
+            <summary>
+            Initializes a new instance of the <see cref="T:meramedia.Linq.Core.UmbracoInfoAttribute"/> class.
+            </summary>
+            <param name="alias">The alias for this piece of umbraco info.</param>
+        </member>
+        <member name="P:meramedia.Linq.Core.UmbracoInfoAttribute.DisplayName">
+            <summary>
+            Gets or sets the display name of the item.
+            </summary>
+            <value>The display name.</value>
+        </member>
+        <member name="P:meramedia.Linq.Core.UmbracoInfoAttribute.Alias">
+            <summary>
+            Gets or sets the alias.
+            </summary>
+            <value>The alias.</value>
+        </member>
+        <member name="P:meramedia.Linq.Core.UmbracoInfoAttribute.Mandatory">
+            <summary>
+            Gets or sets a value indicating whether this property is mandatory.
+            </summary>
+            <value><c>true</c> if mandatory; otherwise, <c>false</c>.</value>
+        </member>
+        <member name="T:meramedia.Linq.Core.DocTypeAttribute">
+            <summary>
+            Marks a class as an umbraco DocType
+            </summary>
+        </member>
+        <member name="T:meramedia.Linq.Core.FieldAttribute">
+            <summary>
+            Marks a property as a standard umbraco field
+            </summary>
+            <remarks>
+            Example usage:
+            - ID
+            - ParentID
+            - CreateDate
+            </remarks>
+        </member>
+        <member name="T:meramedia.Linq.Core.PropertyAttribute">
+            <summary>
+            Marks a property as a custom umbraco DocType property
+            </summary>
+        </member>
+        <member name="T:meramedia.Linq.Core.IDocTypeBase">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="T:meramedia.Linq.Core.NodeCache">
+            <summary>
+            Class for handling the caching of the nodetrees
+            </summary>    
+        </member>
+        <member name="T:meramedia.Linq.Core.UmbracoDataProvider">
+            <summary>
+            Provides the methods required for a data access model within the LINQ to Umbraco project
+            </summary>
+            <remarks>
+            This base class is used when defining how a DataProvider operates against a data source (such as the umbraco.config).
+            
+            It provides abstractions for all the useful operations of the DataProvider
+            </remarks>
+        </member>
+        <member name="F:meramedia.Linq.Core.UmbracoDataProvider.Disposed">
+            <summary>
+            Indicates the disposal status of the current provider
+            </summary>
+        </member>
+        <member name="M:meramedia.Linq.Core.UmbracoDataProvider.LoadTree``1">
+            <summary>
+            Loads the tree with the relevant DocTypes
+            </summary>
+            <typeparam name="TDocType">The type of the DocType to load.</typeparam>
+            <returns></returns>
+        </member>
+        <member name="M:meramedia.Linq.Core.UmbracoDataProvider.LoadAssociation(System.Int32)">
+            <summary>
+            Loads the associated nodes with the relevant DocTypes
+            </summary>
+            <param name="parentNodeId">The parent node id.</param>
+            <returns></returns>
+        </member>
+        <member name="M:meramedia.Linq.Core.UmbracoDataProvider.LoadAssociation``1(System.Collections.Generic.IEnumerable{``0})">
+            <summary>
+            Loads the associated nodes with the relevant DocTypes
+            </summary>
+            <typeparam name="TDocType">The type of the DocType to load.</typeparam>
+            <param name="nodes">The nodes.</param>
+            <returns></returns>
+        </member>
+        <member name="M:meramedia.Linq.Core.UmbracoDataProvider.Load``1(System.Int32)">
+            <summary>
+            Loads the specified id.
+            </summary>
+            <typeparam name="TDocType">The type of the doc type.</typeparam>
+            <param name="id">The id.</param>
+            <returns></returns>
+        </member>
+        <member name="M:meramedia.Linq.Core.UmbracoDataProvider.LoadAncestors(System.Int32)">
+            <summary>
+            Loads the ancestors.
+            </summary>
+            <param name="startNodeId">The start node id.</param>
+            <returns></returns>
+        </member>
+        <member name="M:meramedia.Linq.Core.UmbracoDataProvider.CheckDisposed">
+            <summary>
+            Checks if the provider has been disposed
+            </summary>
+        </member>
+        <member name="M:meramedia.Linq.Core.UmbracoDataProvider.Dispose">
+            <summary>
+            Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.
+            </summary>
+        </member>
+        <member name="M:meramedia.Linq.Core.UmbracoDataProvider.Dispose(System.Boolean)">
+            <summary>
+            Releases unmanaged and - optionally - managed resources
+            </summary>
+            <param name="disposing"><c>true</c> to release both managed and unmanaged resources; <c>false</c> to release only unmanaged resources.</param>
+        </member>
+        <member name="T:meramedia.Linq.Core.Node.NodeAssociationTree`1">
+            <summary>
+            Represents a collection of TDocTypeBase retrieved from the umbraco XML cache which are direct children of a node
+            </summary>
+            <typeparam name="TDocTypeBase">The type of the doc type base.</typeparam>
+        </member>
+        <member name="M:meramedia.Linq.Core.Node.NodeAssociationTree`1.#ctor(System.Int32,meramedia.Linq.Core.UmbracoDataProvider)">
+            <summary>
+            Initializes a new instance of the <see cref="T:meramedia.Linq.Core.Node.NodeAssociationTree`1"/> class for a particular tree section
+            </summary>
+            <param name="parentNodeId">The parent node id to start from.</param>
+            <param name="provider">The NodeDataProvider to link the tree with.</param>
+        </member>
+        <member name="M:meramedia.Linq.Core.Node.NodeAssociationTree`1.GetEnumerator">
+            <summary>
+            Gets the enumerator for this Tree collection
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:meramedia.Linq.Core.Node.NodeAssociationTree`1.ReloadCache">
+            <summary>
+            Reloads the cache.
+            </summary>
+        </member>
+        <member name="P:meramedia.Linq.Core.Node.NodeAssociationTree`1.Provider">
+            <summary>
+            Gets or sets the DataProvider associated with this Tree
+            </summary>
+            <value>The provider.</value>
+        </member>
+        <member name="T:meramedia.Linq.Core.Node.NodeTree`1">
+            <summary>
+            Represents a collection of TDocTypeBase retrieved from the umbraco XML cache
+            </summary>
+            <typeparam name="TDocTypeBase">The type of the doc type base.</typeparam>
+        </member>
+        <member name="M:meramedia.Linq.Core.Node.NodeTree`1.GetEnumerator">
+            <summary>
+            Gets the enumerator.
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:meramedia.Linq.Core.Node.NodeTree`1.ReloadCache">
+            <summary>
+            Reloads the cache for the particular NodeTree
+            </summary>
+        </member>
+        <member name="P:meramedia.Linq.Core.Node.NodeTree`1.Provider">
+            <summary>
+            Gets or sets the provider.
+            </summary>
+            <value>The provider.</value>
+        </member>
+        <member name="T:meramedia.Linq.Core.Node.NodeDataProvider">
+            <summary>
+            Data Provider for LINQ to umbraco via umbraco nodes
+            </summary>
+            <remarks>
+            <para>This class provides a data access model for the umbraco XML cache.
+            It is responsible for the access to the XML and construction of nodes from it.</para>
+            <para>The <see cref="T:meramedia.Linq.Core.Node.NodeDataProvider"/> is capable of reading the XML cache from either the path provided in the umbraco settings or from a specified location on the file system.</para>
+            </remarks>
+        </member>
+        <member name="M:meramedia.Linq.Core.Node.NodeDataProvider.LoadTree``1">
+            <summary>
+            Loads the tree with the relevant DocTypes from the XML
+            </summary>
+            <typeparam name="TDocType">The type of the DocType to load.</typeparam>
+            <returns><see cref="T:meramedia.Linq.Core.Node.NodeTree`1"/> representation of the content tree</returns>
+            <exception cref="T:System.ObjectDisposedException">When the data provider has been disposed of</exception>
+        </member>
+        <member name="M:meramedia.Linq.Core.Node.NodeDataProvider.Load``1(System.Int32)">
+            <summary>
+            Loads the specified id.
+            </summary>
+            <typeparam name="TDocType">The type of the doc type.</typeparam>
+            <param name="id">The id.</param>
+            <returns></returns>
+            <exception cref="T:meramedia.Linq.Core.DocTypeMismatchException">If the type of the parent does not match the provided type</exception>
+            <exception cref="T:System.ArgumentException">No node found matching the provided ID for the parent</exception>
+            <exception cref="T:System.ObjectDisposedException">When the data provider has been disposed of</exception>
+        </member>
+        <member name="M:meramedia.Linq.Core.Node.NodeDataProvider.LoadAssociation(System.Int32)">
+            <summary>
+            Loads the associated (children) nodes with the relivent DocTypes
+            </summary>
+            <param name="parentNodeId">The parent node id.</param>
+            <returns></returns>
+            <exception cref="T:System.ObjectDisposedException">When the data provider has been disposed of</exception>
+        </member>
+        <member name="M:meramedia.Linq.Core.Node.NodeDataProvider.LoadAssociation``1(System.Collections.Generic.IEnumerable{``0})">
+            <summary>
+            Loads the associated nodes with the relivent DocTypes
+            </summary>
+            <typeparam name="TDocType">The type of the DocType to load.</typeparam>
+            <param name="nodes">The nodes.</param>
+            <returns></returns>
+            <exception cref="T:System.ObjectDisposedException">When the data provider has been disposed of</exception>
+        </member>
+        <member name="M:meramedia.Linq.Core.Node.NodeDataProvider.LoadAncestors(System.Int32)">
+            <summary>
+            Loads the ancestors for a node
+            </summary>
+            <param name="startNodeId">The start node id.</param>
+            <returns></returns>
+            <exception cref="T:System.ObjectDisposedException">When the data provider has been disposed of</exception>
+        </member>
+        <member name="M:meramedia.Linq.Core.Node.NodeDataProvider.DynamicNodeCreation(System.Collections.Generic.IEnumerable{System.Xml.Linq.XElement})">
+            <summary>
+            Creates a collection of nodes with the type specified from the XML
+            </summary>
+            <param name="elements">The elements.</param>
+            <returns>Collecton of .NET types from the XML</returns>
+        </member>
+        <member name="M:meramedia.Linq.Core.Node.NodeDataProvider.Flush">
+            <summary>
+            Flushes the cache for this provider
+            </summary>
+        </member>
+        <member name="M:meramedia.Linq.Core.Node.NodeDataProvider.LoadFromXml``1(System.Xml.Linq.XElement,``0)">
+            <summary>
+            Loads from XML.
+            </summary>
+            <typeparam name="T"></typeparam>
+            <param name="xml">The XML.</param>
+            <param name="node">The node.</param>
+        </member>
+        <member name="M:meramedia.Linq.Core.UmbracoDataContext.LoadTree``1">
+            <summary>
+            Loads the tree of umbraco items.
+            </summary>
+            <typeparam name="TDocTypeBase">The type of the DocTypeBase.</typeparam>
+            <returns>Collection of umbraco items</returns>
+            <exception cref="T:System.ObjectDisposedException">If the DataContext has been disposed of</exception>        
+        </member>
+        <member name="M:meramedia.Linq.Core.UmbracoDataContext.Dispose">
+            <summary>
+            Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.
+            </summary>
+        </member>
+        <member name="M:meramedia.Linq.Core.UmbracoDataContext.Dispose(System.Boolean)">
+            <summary>
+            Releases unmanaged and - optionally - managed resources
+            </summary>
+            <param name="disposing"><c>true</c> to release both managed and unmanaged resources; <c>false</c> to release only unmanaged resources.</param>
+        </member>
+        <member name="T:meramedia.Linq.Core.DocTypeBase">
+            <summary>
+            Provides the base framework for an umbraco item
+            </summary>
+        </member>
+        <member name="M:meramedia.Linq.Core.DocTypeBase.ChildrenOfType``1">
+            <summary>
+            Gets the children which are of the type TDocTypeBase.
+            </summary>
+            <typeparam name="TDocTypeBase">The DocType of the children desired.</typeparam>
+            <returns>An <see cref="T:meramedia.Linq.Core.AssociationTree`1"/> of the children</returns>        
+        </member>
+        <member name="M:meramedia.Linq.Core.DocTypeBase.Parent``1">
+            <summary>
+            Parent this instance.
+            </summary>
+            <typeparam name="TParent">The type of the parent.</typeparam>
+            <returns>Null when at the root level, else the parent instance</returns>
+            <exception cref="T:meramedia.Linq.Core.DocTypeMismatchException">If the type of the parent does not match the provided type</exception>
+        </member>
+        <member name="M:meramedia.Linq.Core.DocTypeBase.AncestorOrDefault``1">
+            <summary>
+            Retrieves the first matching ancestor of the current type
+            </summary>
+            <remarks>
+            Provides similar functionality to the XPath method
+            </remarks>
+            <returns>First ancestor matching type. Null if no match found</returns>        
+        </member>
+        <member name="M:meramedia.Linq.Core.DocTypeBase.AncestorOrDefault``1(System.Func{``0,System.Boolean})">
+            <summary>
+            Retrieves the first matching ancestor of the current type and additional boolean function
+            </summary>
+            <typeparam name="TDocType">The type of the doc type.</typeparam>
+            <param name="func">Additional boolean operation to filter on</param>
+            <returns>First ancestor matching type and function. Null if no match found</returns>
+            <exception cref="T:System.ArgumentNullException">Func parameter required</exception>
+        </member>
+        <member name="P:meramedia.Linq.Core.DocTypeBase.Provider">
+            <summary>
+            Gets or sets the provider.
+            </summary>
+            <value>The provider.</value>
+        </member>
+        <member name="P:meramedia.Linq.Core.DocTypeBase.Children">
+            <summary>
+            Gets the children of this DocType instance.
+            </summary>
+            <value>The children of this DocType instance.</value>
+        </member>
+        <member name="T:meramedia.Linq.Core.DocTypeMismatchException">
+            <summary>
+            Exception for when the provided class does not meet the expected class
+            </summary>
+        </member>
+        <member name="M:meramedia.Linq.Core.DocTypeMismatchException.#ctor(System.String,System.String)">
+            <summary>
+            Initializes a new instance of the <see cref="T:meramedia.Linq.Core.DocTypeMismatchException"/> class.
+            </summary>
+            <param name="actual">The actual doc type alias.</param>
+            <param name="expected">The expcected doc type alias.</param>
+        </member>
+        <member name="M:meramedia.Linq.Core.DocTypeMismatchException.#ctor(System.String,System.String,System.String)">
+            <summary>
+            Initializes a new instance of the <see cref="T:meramedia.Linq.Core.DocTypeMismatchException"/> class.
+            </summary>
+            <param name="actual">The actual doc type alias.</param>
+            <param name="expected">The expcected doc type alias.</param>
+            <param name="message">Additional message information.</param>
+        </member>
+        <member name="M:meramedia.Linq.Core.DocTypeMismatchException.#ctor(System.String,System.String,System.String,System.Exception)">
+            <summary>
+            Initializes a new instance of the <see cref="T:meramedia.Linq.Core.DocTypeMismatchException"/> class.
+            </summary>
+            <param name="actual">The actual doc type alias.</param>
+            <param name="expected">The expcected doc type alias.</param>
+            <param name="message">Additional message information.</param>
+            <param name="innerException">The inner exception.</param>
+        </member>
+        <member name="M:meramedia.Linq.Core.DocTypeMismatchException.#ctor(System.Runtime.Serialization.SerializationInfo,System.Runtime.Serialization.StreamingContext)">
+            <summary>
+            Initializes a new instance of the <see cref="!:MandatoryFailureException"/> class.
+            </summary>
+            <param name="info">The <see cref="T:System.Runtime.Serialization.SerializationInfo"/> that holds the serialized object data about the exception being thrown.</param>
+            <param name="context">The <see cref="T:System.Runtime.Serialization.StreamingContext"/> that contains contextual information about the source or destination.</param>
+            <exception cref="T:System.ArgumentNullException">
+            The <paramref name="info"/> parameter is null.
+            </exception>
+            <exception cref="T:System.Runtime.Serialization.SerializationException">
+            The class name is null or <see cref="P:System.Exception.HResult"/> is zero (0).
+            </exception>
+        </member>
+        <member name="P:meramedia.Linq.Core.DocTypeMismatchException.Expected">
+            <summary>
+            Gets or sets the expected DocTypeAlias
+            </summary>
+            <value>The expected DocTypeAlias.</value>
+        </member>
+        <member name="P:meramedia.Linq.Core.DocTypeMismatchException.Actual">
+            <summary>
+            Gets or sets the actual DocTypeAlias
+            </summary>
+            <value>The actual DocTypeAlias.</value>
+        </member>
+        <member name="T:meramedia.Linq.Core.ReflectionAssistance">
+            <summary>
+            Class containing helpers when doing reflection against nodes
+            </summary>
+        </member>
+        <member name="F:meramedia.Linq.Core.ReflectionAssistance.CustomDocTypeProperties">
+            <summary>
+            Prebuilt function for getting the custom properites of the class
+            </summary>
+            <remarks>This is a Lambda function which will return all the properties of the current class which are custom DocType properties</remarks>
+        </member>
+        <member name="F:meramedia.Linq.Core.ReflectionAssistance.MandatoryDocTypeProperties">
+            <summary>
+            Prebuild function for getting the mandatory properites of the class
+            </summary>
+            <remarks>This is a Lambda function which will return all the properties of the current class which are custom DocType properties and mandatory</remarks>
+        </member>
+        <member name="F:meramedia.Linq.Core.ReflectionAssistance.CompareByAlias">
+            <summary>
+            Compares a .NET type to an Xml representation
+            </summary>
+        </member>
+        <member name="M:meramedia.Linq.Core.ReflectionAssistance.GetUmbracoInfoAttribute(System.Reflection.MemberInfo)">
+            <summary>
+            Get the <see cref="!:meramedia.Linq.Core.umbracoInfoAttribute"/> for a <see cref="T:System.Reflection.MethodInfo"/> object
+            </summary>
+            <param name="member">The methodInfo to get the <see cref="!:meramedia.Linq.Core.umbracoInfoAttribute"/> for.</param>
+            <returns></returns>
+        </member>
+        <member name="M:meramedia.Linq.Core.ReflectionAssistance.GetUmbracoInfoAttribute(System.Type)">
+            <summary>
+            Get the <see cref="!:meramedia.Linq.Core.umbracoInfoAttribute"/> for a type
+            </summary>
+            <param name="type">The type to get the <see cref="!:meramedia.Linq.Core.umbracoInfoAttribute"/> for.</param>
+            <returns></returns>
+        </member>
+    </members>
+</doc>
