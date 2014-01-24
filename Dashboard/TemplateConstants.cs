@@ -24,18 +24,9 @@ namespace {0}
         {{
             get
             {{
-                if (UmbracoContext.Current.InPreviewMode)
-                {{
-                    var umbracoUser = UmbracoContext.Current.UmbracoUser;
-                    var previewFileName = umbraco.BusinessLogic.StateHelper.Cookies.Preview.GetValue();
-                    var previewPath = String.Format(""/App_Data/preview/{{0}}_{{1}}.config"", umbracoUser.Id, previewFileName);
-                    var nodeDataProvider = new NodeDataProvider(previewPath);
-                    return new DataContext {{ DataProvider = nodeDataProvider }};
-                }}
-                else
-                {{
-                    return _instance.Value;
-                }}
+
+                return _instance.Value;
+
             }}
         }}
 
@@ -51,7 +42,7 @@ namespace {0}
 	{2}
 }}";
 
-        internal const string TREE_TEMPLATE = 
+        internal const string TREE_TEMPLATE =
 @"
         public Tree<{0}> {1}
         {{
@@ -69,7 +60,7 @@ namespace {0}
         //4 - child relationships
         //5 - interface explicit implementation
         //6 - description
-        internal const string CLASS_TEMPLATE = 
+        internal const string CLASS_TEMPLATE =
 @"
         /// <summary>
         /// {4}
@@ -86,7 +77,7 @@ namespace {0}
 
 ;
 
-        internal const string PROPERTIES_TEMPLATE = 
+        internal const string PROPERTIES_TEMPLATE =
 @"        
         /// <summary>
         /// {2}
@@ -97,7 +88,7 @@ namespace {0}
         public virtual {0} {1}
         {{ get; set;}}";
 
-        internal const string CHILD_RELATIONS_TEMPLATE = 
+        internal const string CHILD_RELATIONS_TEMPLATE =
 @"
         private AssociationTree<{0}> _{0}s;
         public AssociationTree<{0}> {0}s

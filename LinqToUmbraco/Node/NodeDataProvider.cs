@@ -26,12 +26,16 @@ namespace meramedia.Linq.Core.Node
     /// </remarks>
     public sealed class NodeDataProvider : UmbracoDataProvider
     {
+
         private string XmlPath { get; set; }
-        
+
         internal IEnumerable<XElement> Xml
         {
             get
-            {                
+            {
+                if (UmbracoContext.Current.InPreviewMode)
+                    return XDocument.Load(XmlPath).Descendants();
+
                 if (NodeCache.Xml != null)
                     return NodeCache.Xml;
 
@@ -47,24 +51,24 @@ namespace meramedia.Linq.Core.Node
                     Debug.WriteLine("Xml fetched for LinqToUmbraco");
                     NodeCache.Xml = XDocument.Load(new XmlNodeReader(doc)).Descendants();
                     return NodeCache.Xml;
-                }                    
+                }
             }
         }
 
         public NodeDataProvider()
         {
-            XmlPath = UmbracoContext.Current.Server.MapPath(UmbracoContext.Current.Server.ContentXmlPath);
+            if (UmbracoContext.Current.InPreviewMode)
+            {
+                var umbracoUser = UmbracoContext.Current.UmbracoUser;
+                var previewFileName = umbraco.BusinessLogic.StateHelper.Cookies.Preview.GetValue();
+                XmlPath = UmbracoContext.Current.Server.MapPath(String.Format("/App_Data/preview/{0}_{1}.config", umbracoUser.Id, previewFileName));
+            }
+
+            else
+                XmlPath = UmbracoContext.Current.Server.MapPath(UmbracoContext.Current.Server.ContentXmlPath);
 
             if (!File.Exists(XmlPath))
-                throw new FileNotFoundException("The XML used by the provider must exist", XmlPath);        
-        }
-
-        public NodeDataProvider(String xmlPath)
-        {
-            XmlPath = UmbracoContext.Current.Server.MapPath(xmlPath);
-
-            if (!File.Exists(XmlPath))
-                throw new FileNotFoundException("The XML used by the provider must exist", XmlPath);        
+                throw new FileNotFoundException("The XML used by the provider must exist", XmlPath);
         }
 
         /// <summary>
@@ -79,10 +83,17 @@ namespace meramedia.Linq.Core.Node
 
             var attr = ReflectionAssistance.GetUmbracoInfoAttribute(typeof(TDocType));
 
-            if (!NodeCache.ContainsKey(attr))
-                SetupNodeTree<TDocType>(attr);
+            if (!UmbracoContext.Current.InPreviewMode)
+            {
+                if (!NodeCache.ContainsKey(attr))
+                    SetupNodeTree<TDocType>(attr);
 
-            return NodeCache.GetTree<TDocType>(attr);
+                return NodeCache.GetTree<TDocType>(attr);
+            }
+            else
+                return new NodeTree<TDocType>(this);
+
+
         }
 
         internal void SetupNodeTree<TDocType>(UmbracoInfoAttribute attr) where TDocType : DocTypeBase, new()
@@ -175,7 +186,7 @@ namespace meramedia.Linq.Core.Node
         internal IEnumerable<DocTypeBase> DynamicNodeCreation(IEnumerable<XElement> elements)
         {
             foreach (XElement node in elements)
-            {                
+            {
                 Type t = Types.KnownTypes[Casing.SafeAlias(node.Name.LocalName)];
                 DocTypeBase instaceOfT = (DocTypeBase)Activator.CreateInstance(t); //create an instance of the type and down-cast so we can use it
                 LoadFromXml(node, instaceOfT);
@@ -191,7 +202,7 @@ namespace meramedia.Linq.Core.Node
         /// Flushes the cache for this provider
         /// </summary>
         public override void Flush()
-        {         
+        {
             CheckDisposed();
             NodeCache.ClearTrees();
             MediaCache.Instance.Flush();
@@ -213,7 +224,7 @@ namespace meramedia.Linq.Core.Node
             var macros = umbraco.cms.businesslogic.macro.Macro.GetAll();
             foreach (var m in macros)
                 Cache.ClearCacheItem("UmbracoMacroCache" + m.Alias);
-            
+
         }
 
         /// <summary>
@@ -258,7 +269,7 @@ namespace meramedia.Linq.Core.Node
                     }
                 }
 
-                if (p.PropertyType.IsValueType && p.PropertyType.GetGenericArguments().Length > 0 && 
+                if (p.PropertyType.IsValueType && p.PropertyType.GetGenericArguments().Length > 0 &&
                         typeof(Nullable<>).IsAssignableFrom(p.PropertyType.GetGenericTypeDefinition()))
                 {
                     if (string.IsNullOrEmpty(data))
@@ -317,39 +328,39 @@ namespace meramedia.Linq.Core.Node
         private static T SetValuesFromXml<T>(XElement xml) where T : DocTypeBase, new()
         {
             return new T
-                {
-                    Id = (int) xml.Attribute("id"),
-                    ParentNodeId = (int) xml.Attribute("parentID"),
-                    NodeName = (string) xml.Attribute("nodeName"),
-                    Version = (string) xml.Attribute("version"),
-                    CreateDate = (DateTime) xml.Attribute("createDate"),
-                    SortOrder = (int) xml.Attribute("sortOrder"),
-                    UpdateDate = (DateTime) xml.Attribute("updateDate"),
-                    CreatorID = (int) xml.Attribute("creatorID"),
-                    CreatorName = (string) xml.Attribute("creatorName"),
-                    WriterID = (int) xml.Attribute("writerID"),
-                    WriterName = (string) xml.Attribute("writerName"),
-                    Level = (int) xml.Attribute("level"),
-                    TemplateId = (int) xml.Attribute("template"),
-                    Path = (string) xml.Attribute("path")
-                };
+            {
+                Id = (int)xml.Attribute("id"),
+                ParentNodeId = (int)xml.Attribute("parentID"),
+                NodeName = (string)xml.Attribute("nodeName"),
+                Version = (string)xml.Attribute("version"),
+                CreateDate = (DateTime)xml.Attribute("createDate"),
+                SortOrder = (int)xml.Attribute("sortOrder"),
+                UpdateDate = (DateTime)xml.Attribute("updateDate"),
+                CreatorID = (int)xml.Attribute("creatorID"),
+                CreatorName = (string)xml.Attribute("creatorName"),
+                WriterID = (int)xml.Attribute("writerID"),
+                WriterName = (string)xml.Attribute("writerName"),
+                Level = (int)xml.Attribute("level"),
+                TemplateId = (int)xml.Attribute("template"),
+                Path = (string)xml.Attribute("path")
+            };
         }
         private static void SetValuesFromXml<T>(XElement xml, T node) where T : DocTypeBase
         {
-            node.Id = (int) xml.Attribute("id");
-            node.ParentNodeId = (int) xml.Attribute("parentID");
-            node.NodeName = (string) xml.Attribute("nodeName");
-            node.Version = (string) xml.Attribute("version");
-            node.CreateDate = (DateTime) xml.Attribute("createDate");
-            node.SortOrder = (int) xml.Attribute("sortOrder");
-            node.UpdateDate = (DateTime) xml.Attribute("updateDate");
-            node.CreatorID = (int) xml.Attribute("creatorID");
-            node.CreatorName = (string) xml.Attribute("creatorName");
-            node.WriterID = (int) xml.Attribute("writerID");
-            node.WriterName = (string) xml.Attribute("writerName");
-            node.Level = (int) xml.Attribute("level");
-            node.TemplateId = (int) xml.Attribute("template");
-            node.Path = (string) xml.Attribute("path");
+            node.Id = (int)xml.Attribute("id");
+            node.ParentNodeId = (int)xml.Attribute("parentID");
+            node.NodeName = (string)xml.Attribute("nodeName");
+            node.Version = (string)xml.Attribute("version");
+            node.CreateDate = (DateTime)xml.Attribute("createDate");
+            node.SortOrder = (int)xml.Attribute("sortOrder");
+            node.UpdateDate = (DateTime)xml.Attribute("updateDate");
+            node.CreatorID = (int)xml.Attribute("creatorID");
+            node.CreatorName = (string)xml.Attribute("creatorName");
+            node.WriterID = (int)xml.Attribute("writerID");
+            node.WriterName = (string)xml.Attribute("writerName");
+            node.Level = (int)xml.Attribute("level");
+            node.TemplateId = (int)xml.Attribute("template");
+            node.Path = (string)xml.Attribute("path");
 
         }
 
@@ -362,19 +373,19 @@ namespace meramedia.Linq.Core.Node
         {
             if (typeof(T) != typeof(DocTypeBase))
             {
-                var attr = ReflectionAssistance.GetUmbracoInfoAttribute(typeof (T));
+                var attr = ReflectionAssistance.GetUmbracoInfoAttribute(typeof(T));
                 if (!NodeCache.ContainsKey(attr))
                     SetupNodeTree<T>(attr);
             }
             var node = NodeCache.GetNode<T>(id);
             if (node != null)
                 return node;
-            else            
+            else
             {
                 Debug.WriteLine("Node not found in cache, trying xml..");
                 var xmlNode = Xml.SingleOrDefault(d => d.Attribute("isDoc") != null && (int)d.Attribute("id") == id);
                 return SetValuesFromXml<T>(xmlNode);
-            }            
+            }
         }
 
 
@@ -405,7 +416,7 @@ namespace meramedia.Linq.Core.Node
                     var xmlNode = Xml.SingleOrDefault(d => d.Attribute("isDoc") != null && (int)d.Attribute("id") == id);
                     yield return SetValuesFromXml<T>(xmlNode);
                 }
-            }  
+            }
         }
     }
 }
