@@ -10,10 +10,18 @@ namespace meramedia.Linq.Core
 {
     public abstract class UmbracoDataContext : IDisposable
     {
-        private static readonly Lazy<UmbracoDataProvider> _dataProvider = new Lazy<UmbracoDataProvider>(() => new NodeDataProvider());
+        private Lazy<UmbracoDataProvider> _dataProvider = new Lazy<UmbracoDataProvider>(() => new NodeDataProvider());
+
         public UmbracoDataProvider DataProvider
         {
-            get { return _dataProvider.Value; }
+            get
+            {
+                if (!UmbracoContext.Current.InPreviewMode)
+                    return _dataProvider.Value;
+                else
+                    return new NodeDataProvider();
+            }
+            set { _dataProvider = new Lazy<UmbracoDataProvider>(() => value); }
         }
 
 
@@ -28,7 +36,7 @@ namespace meramedia.Linq.Core
             CheckDisposed();
             return DataProvider.LoadTree<TDocTypeBase>();
         }
-       
+
 
         #region IDisposable Members
 
@@ -75,11 +83,11 @@ namespace meramedia.Linq.Core
             return DataProvider.Find(id);
         }
 
-        public T Find<T>(int id) where T: DocTypeBase, new()
+        public T Find<T>(int id) where T : DocTypeBase, new()
         {
             return DataProvider.Find<T>(id);
         }
-        public IEnumerable<T> FindAll<T>(int[] ids) where T: DocTypeBase, new()
+        public IEnumerable<T> FindAll<T>(int[] ids) where T : DocTypeBase, new()
         {
             return DataProvider.FindAll<T>(ids);
         }
@@ -106,13 +114,13 @@ namespace meramedia.Linq.Core
             }
         }
 
-        public T GetCurrentPage<T>() where T: DocTypeBase, new()
+        public T GetCurrentPage<T>() where T : DocTypeBase, new()
         {
             if (UmbracoContext.Current.PageId.HasValue)
                 return DataProvider.Find<T>(UmbracoContext.Current.PageId.Value);
             else return null;
         }
-    
+
         public MediaCache Media
         {
             get

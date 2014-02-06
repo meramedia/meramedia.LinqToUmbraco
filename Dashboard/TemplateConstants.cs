@@ -24,13 +24,14 @@ namespace {0}
         {{
             get
             {{
-                return _instance.Value;
-            }}
 
+                return _instance.Value;
+
+            }}
         }}
 
 		partial void OnCreated();
-		protected DataContext() : base()
+		public DataContext() : base()
 		{{
 			OnCreated();
 		}}
@@ -41,7 +42,7 @@ namespace {0}
 	{2}
 }}";
 
-        internal const string TREE_TEMPLATE = 
+        internal const string TREE_TEMPLATE =
 @"
         public Tree<{0}> {1}
         {{
@@ -59,7 +60,7 @@ namespace {0}
         //4 - child relationships
         //5 - interface explicit implementation
         //6 - description
-        internal const string CLASS_TEMPLATE = 
+        internal const string CLASS_TEMPLATE =
 @"
         /// <summary>
         /// {4}
@@ -76,7 +77,7 @@ namespace {0}
 
 ;
 
-        internal const string PROPERTIES_TEMPLATE = 
+        internal const string PROPERTIES_TEMPLATE =
 @"        
         /// <summary>
         /// {2}
@@ -87,7 +88,7 @@ namespace {0}
         public virtual {0} {1}
         {{ get; set;}}";
 
-        internal const string CHILD_RELATIONS_TEMPLATE = 
+        internal const string CHILD_RELATIONS_TEMPLATE =
 @"
         private AssociationTree<{0}> _{0}s;
         public AssociationTree<{0}> {0}s
