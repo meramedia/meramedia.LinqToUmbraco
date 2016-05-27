@@ -1,4 +1,4 @@
 meramedia.LinqToUmbraco
 =======================
 
-LinqToUmbraco with a lot of added functionality and speed!
+Moved to bitbucket https://bitbucket.org/meramedia/linqtoumbraco
